@@ -1,6 +1,7 @@
 #include "models/ViewManager.h"
 
-int main() {
+int main()
+{
     ViewManager viewManager;
     viewManager.showListView();
 

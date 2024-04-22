@@ -37,3 +37,32 @@ void Event::editEvent(const map<string, string>& changes) {
 void Event::deleteEvent() {
     // delete the event on the DB
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                   Getters                                  */
+/* -------------------------------------------------------------------------- */
+
+string Event::getName() const {
+    return this->name;
+}
+
+string Event::getDescription() const {
+    return this->description;
+}
+
+string Event::getDate() const {
+    return this->date;
+}
+
+string Event::getTime() const {
+    return this->time;
+}
+
+string Event::getRecurring() const {
+    return this->recurrence;
+}
+
+string Event::getPriority() const {
+    return this->priority;
+}
+

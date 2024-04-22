@@ -24,6 +24,16 @@ public:
     void editEvent(const map<string, string>& changes);
     // used for delete the event on the DB
     void deleteEvent();
+
+    /* -------------------------------------------------------------------------- */
+    /*                                   getters                                  */
+    /* -------------------------------------------------------------------------- */
+    string getName() const;
+    string getDescription() const;
+    string getDate() const;
+    string getTime() const;
+    string getRecurring() const;
+    string getPriority() const;
 };
 
 #endif // EVENT_H

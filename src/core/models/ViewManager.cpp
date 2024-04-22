@@ -1,5 +1,8 @@
 #include "models/ViewManager.h"
 
-void ViewManager::showListView() {
+#include <iostream>
+
+void ViewManager::showListView()
+{
     this->listView.display();
 }

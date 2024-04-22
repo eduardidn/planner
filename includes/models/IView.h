@@ -1,10 +1,12 @@
 #ifndef I_VIEW_H
 #define I_VIEW_H
 
-class IView {
+class IView
+{
 public:
-    virtual ~IView() {}  // Trivial virtual destructor with a definition
     virtual void display() = 0;
+    virtual void displayMenuOptions() = 0;
+    virtual void whileUserMenuSelection() = 0;
 };
 
 #endif
