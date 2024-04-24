@@ -1,14 +1,16 @@
-#ifndef LIST_VIEW_H
-#define LIST_VIEW_H
+#ifndef MAIN_CONTROLLER_H
+#define MAIN_CONTROLLER_H
 
-#include "models/IView.h"
+#include "models/IController.h"
 #include "models/Event.h"
+#include "main_section/MainView.h"
 
-class ListView : public IView
+class MainController : public IController
 {
 
 private:
     bool isMenuHearing = false;
+    MainView mainView;
 
 public:
     enum ViewMode
@@ -17,12 +19,9 @@ public:
         Weekly
     };
     ViewMode selectedView;
-
-    void display() override;
-    void displayMenuOptions() override;
     void whileUserMenuSelection() override;
-
-    void displayWeeklyView();
+    void handleDisplay() override;
+    void handleDisplayWeeklyView();
     void switchViews();
 
     /* --------------------------------- Getters -------------------------------- */
@@ -31,9 +30,6 @@ public:
     /* --------------------------------- Setters -------------------------------- */
     void setSelectedView(ViewMode value);
     void setIsMenuHearing(bool value);
-
-    /* --------------------------------- Helpers -------------------------------- */
-    void displayTable(vector<Event> eventList);
 };
 
-#endif // LIST_VIEW_H
+#endif // MAIN_CONTROLLER_H

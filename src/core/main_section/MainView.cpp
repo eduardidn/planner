@@ -1,4 +1,4 @@
-#include "list_section/ListView.h"
+#include "main_section/MainView.h"
 #include "utils/ConsoleUtils.h"
 #include "models/Event.h"
 
@@ -14,29 +14,23 @@ using namespace std;
 #define CLEAR "clear"
 #endif
 
-void ListView::display()
+void MainView::display()
 {
-    this->setSelectedView(ViewMode::Daily);
     system(CLEAR);
-    vector<Event> eventList = {
+    vector<Event> eventMain = {
         Event("Event 1", "Description 1", "2021-10-10", "10:00", "daily", "high"),
         Event("Event 2", "Description 2", "2021-10-11", "11:00", "weekly", "medium")};
     cout << "Here are your events:" << endl;
 
-    this->displayTable(eventList);
-    this->displayMenuOptions();
-    if (!this->getIsMenuHearing())
-    {
-        this->whileUserMenuSelection();
-    }
+    this->displayTable(eventMain);
+    displayMenuOptions();
 }
 
-void ListView::displayWeeklyView()
+void MainView::displayWeeklyView()
 {
-    this->setSelectedView(ViewMode::Weekly);
     system(CLEAR);
     vector<Event>
-        weeklyEventList = {
+        weeklyEventMain = {
             Event("Event 1", "Description 1", "2021-10-10", "10:00", "daily", "high"),
             Event("Event 2", "Description 2", "2021-10-11", "11:00", "weekly", "medium"),
             Event("Event 3", "Description 3", "2021-10-11", "11:00", "weekly", "medium"),
@@ -44,11 +38,11 @@ void ListView::displayWeeklyView()
 
     cout << "Here are your events for the week:" << endl;
 
-    this->displayTable(weeklyEventList);
-    this->displayMenuOptions();
+    this->displayTable(weeklyEventMain);
+    displayMenuOptions();
 }
 
-void ListView::displayMenuOptions()
+void MainView::displayMenuOptions()
 {
     cout << endl;
     cout << left << setw(15) << "Command"
@@ -60,77 +54,12 @@ void ListView::displayMenuOptions()
     ConsoleUtils::displayOption("f", "Set view as favorite", "Marks the selected view as a favorite, highlighting it.");
     ConsoleUtils::displayOption("e", "Edit record", "Moves to the edit record screen to modify existing events.");
     ConsoleUtils::displayOption("a", "Add record", "Displays options on how the user can create a new record.");
-    ConsoleUtils::displayOption("d", "Delete record", "Prompts the user to select records to delete from the available list.");
+    ConsoleUtils::displayOption("d", "Delete record", "Prompts the user to select records to delete from the available main.");
     ConsoleUtils::displayOption("q", "Exit", "Exit the application.");
 }
 
-void ListView::whileUserMenuSelection()
-{
-    this->setIsMenuHearing(true);
-    char command = '\0';
-    do
-    {
-        cout << endl
-             << "Enter command: ";
-        cin >> command;
-
-        switch (command)
-        {
-        case 'v':
-            this->switchViews();
-            break;
-        case 'f':
-            cout << "Waiting for connection with the DB to do this";
-            break;
-        case 'e':
-            cout << "Waiting for edit view";
-            break;
-        case 'a':
-            cout << "Waiting for creation view";
-            break;
-        case 'd':
-            cout << "Waiting for delete option to be ready";
-            break;
-        case 'q':
-            cout << "Quit" << endl;
-            break;
-        default:
-            cout << "Invalid command, Please select a valid option from the list." << endl;
-            break;
-        }
-    } while (command != 'q');
-}
-
-void ListView::switchViews()
-{
-    if (selectedView == ViewMode::Daily)
-    {
-        displayWeeklyView();
-        return;
-    }
-
-    display();
-}
-
-/* --------------------------------- Getters -------------------------------- */
-bool ListView::getIsMenuHearing()
-{
-    return this->isMenuHearing;
-}
-
-/* --------------------------------- Setters -------------------------------- */
-void ListView::setSelectedView(ViewMode value)
-{
-    this->selectedView = value;
-}
-
-void ListView::setIsMenuHearing(bool value)
-{
-    this->isMenuHearing = value;
-}
-
 /* --------------------------------- Helpers -------------------------------- */
-void ListView::displayTable(vector<Event> eventList)
+void MainView::displayTable(vector<Event> eventMain)
 {
     cout << endl;
     cout << left << setw(10) << "Event" << setw(20) << "Description"
@@ -138,7 +67,7 @@ void ListView::displayTable(vector<Event> eventList)
          << "Recurring" << setw(10) << "Priority" << endl;
     cout << string(75, '-') << endl;
 
-    for (const Event &event : eventList)
+    for (const Event &event : eventMain)
     {
         cout << left << setw(10) << event.getName()
              << setw(20) << event.getDescription()

@@ -1,9 +1,9 @@
-#include "models/ViewManager.h"
+#include "main_section/MainController.h"
 
 int main()
 {
-    ViewManager viewManager;
-    viewManager.showListView();
+    MainController mainController;
+    mainController.handleDisplay();
 
     return 0;
 }
