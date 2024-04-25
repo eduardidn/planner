@@ -11,8 +11,10 @@ class MainController : public IController
 private:
     bool isMenuHearing = false;
     MainView mainView;
+    function<void()> onCreateViewCallback;
 
 public:
+    MainController(std::function<void()> createViewCb);
     enum ViewMode
     {
         Daily,

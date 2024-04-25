@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["pqxx"],
+  "cSpell.words": ["aily", "edium", "eekly", "onthly", "pqxx", "ritical"],
   "files.associations": {
     "*.embeddedhtml": "html",
     "vector": "cpp",
@@ -68,6 +68,7 @@
     "system_error": "cpp",
     "type_traits": "cpp",
     "utility": "cpp",
-    "cinttypes": "cpp"
+    "cinttypes": "cpp",
+    "map": "cpp"
   }
 }

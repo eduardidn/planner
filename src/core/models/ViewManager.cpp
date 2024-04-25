@@ -1,12 +1,16 @@
 #include "models/ViewManager.h"
 
-void ViewManager::showView(IView *view)
-{
-    currentView = view;
-    currentView->display();
-}
+ViewManager::ViewManager() : mainController([this]()
+                                            { this->showCreateView(); }),
+                             createController([this]()
+                                              { this->showMainView(); }) {}
 
 void ViewManager::showMainView()
 {
     mainController.handleDisplay();
+}
+
+void ViewManager::showCreateView()
+{
+    createController.handleDisplay();
 }

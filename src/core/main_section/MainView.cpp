@@ -18,8 +18,8 @@ void MainView::display()
 {
     system(CLEAR);
     vector<Event> eventMain = {
-        Event("Event 1", "Description 1", "2021-10-10", "10:00", "daily", "high"),
-        Event("Event 2", "Description 2", "2021-10-11", "11:00", "weekly", "medium")};
+        Event("Event 1", "Description 1", "2021-10-10", "10:00 AM", "daily", "high"),
+        Event("Event 2", "Description 2", "2021-10-11", "11:00 AM", "weekly", "medium")};
     cout << "Here are your events:" << endl;
 
     this->displayTable(eventMain);

@@ -2,7 +2,10 @@
 
 #include <iostream>
 #include <iomanip>
+#include <limits>
 using namespace std;
+
+MainController::MainController(std::function<void()> createViewCallback) : onCreateViewCallback(createViewCallback) {}
 
 void MainController::handleDisplay()
 {
@@ -28,11 +31,12 @@ void MainController::whileUserMenuSelection()
 {
     this->setIsMenuHearing(true);
     char command = '\0';
-    do
+
+    while (command != 'q' && isMenuHearing)
     {
         cout << endl
              << "Enter command: ";
-        cin >> command;
+        std::cin >> command;
 
         switch (command)
         {
@@ -46,19 +50,19 @@ void MainController::whileUserMenuSelection()
             cout << "Waiting for edit view";
             break;
         case 'a':
-            cout << "Waiting for creation view";
+            onCreateViewCallback();
             break;
         case 'd':
             cout << "Waiting for delete option to be ready";
             break;
         case 'q':
-            cout << "Quit" << endl;
+            cout << "Quit";
             break;
         default:
             cout << "Invalid command, Please select a valid option from the main." << endl;
             break;
         }
-    } while (command != 'q' && isMenuHearing);
+    };
 }
 
 void MainController::switchViews()
