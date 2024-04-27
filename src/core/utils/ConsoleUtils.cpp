@@ -1,6 +1,7 @@
 #include "utils/DateUtils.h"
 
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 #include <string>
 using namespace std;
@@ -82,7 +83,12 @@ namespace ConsoleUtils
             cin >> day;
         }
 
-        return to_string(year) + "-" + to_string(month) + "-" + to_string(day);
+        ostringstream dateFormatted;
+        dateFormatted << year << "-"
+                      << setw(2) << setfill('0') << month << "-"
+                      << setw(2) << setfill('0') << day;
+
+        return dateFormatted.str();
     }
 
     string getEventTimeField()
@@ -116,7 +122,12 @@ namespace ConsoleUtils
         }
 
         string ampmString = ampm == "a" ? "AM" : "PM";
-        return to_string(hour) + ":" + to_string(minute) + " " + ampmString;
+        ostringstream timeFormatted;
+        timeFormatted << hour << ":"
+                      << setw(2) << setfill('0') << minute << " "
+                      << ampmString;
+
+        return timeFormatted.str();
     }
 
     string getEventFrequencyField()

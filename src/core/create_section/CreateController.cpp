@@ -122,7 +122,7 @@ void CreateController::saveEvent()
         newEventFields["description"],
         newEventFields["date"],
         newEventFields["time"],
-        newEventFields["frequency"],
+        newEventFields["frequency"].empty() ? "once" : newEventFields["frequency"],
         newEventFields["priority"]);
     onCreateEventCallback(newEvent);
     redirectToMainView();
