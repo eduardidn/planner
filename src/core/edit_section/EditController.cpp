@@ -1,5 +1,6 @@
 #include "edit_section/EditController.h"
 #include "utils/ConsoleUtils.h"
+#include "utils/EventUtils.h"
 
 #include <iostream>
 #include <iomanip>
@@ -166,6 +167,9 @@ void EditController::setEventPriorityField()
 
 void EditController::editEvent()
 {
+    bool canEditEvent = EventUtils::validateEvent(EventToEditFields);
+    if (!canEditEvent)
+        return;
     events[eventIndex]->editEvent(EventToEditFields);
     redirectToMainView();
 }

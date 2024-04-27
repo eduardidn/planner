@@ -1,5 +1,6 @@
 #include "create_section/CreateController.h"
 #include "utils/ConsoleUtils.h"
+#include "utils/EventUtils.h"
 
 #include <iostream>
 #include <iomanip>
@@ -112,6 +113,10 @@ void CreateController::setEventPriorityField()
 
 void CreateController::saveEvent()
 {
+    bool canSaveEvent = EventUtils::validateEvent(newEventFields);
+    if (!canSaveEvent)
+        return;
+
     Event newEvent(
         newEventFields["title"],
         newEventFields["description"],
