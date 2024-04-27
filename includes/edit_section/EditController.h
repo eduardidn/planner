@@ -21,7 +21,7 @@ public:
     void whileUserMenuSelection() override;
     void handleDisplay() override;
     void selectEventHearing();
-    void setEventToEdit(const int &id);
+    void setEventToEdit(const int &index);
 
     /* --------------------------------- Helpers -------------------------------- */
     void setEventStringField(const string &field, const string &value);

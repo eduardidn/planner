@@ -15,9 +15,10 @@ private:
     MainView mainView;
     function<void(function<void(Event)>)> onCreateViewCallback;
     function<void(const vector<Event *> &events)> onEditViewCallback;
+    function<void(const vector<Event *> &events)> onDeleteViewCallback;
 
 public:
-    MainController(function<void(function<void(Event)>)> createViewCb, function<void(const vector<Event *> &events)> editViewCb);
+    MainController(function<void(function<void(Event)>)> createViewCb, function<void(const vector<Event *> &events)> editViewCb, function<void(const vector<Event *> &events)> deleteViewCb);
     enum ViewMode
     {
         Daily,

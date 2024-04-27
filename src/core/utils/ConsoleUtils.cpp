@@ -97,7 +97,7 @@ namespace ConsoleUtils
         string ampm;
 
         cout << "You will enter the time in a 12-hour format." << endl;
-        cout << "Enter the hour (1-12) - (You can select the time): ";
+        cout << "Enter the hour (1-12): ";
         cin >> hour;
         while (cin.fail() || hour < 1 || hour > 12)
         {

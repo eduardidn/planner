@@ -7,7 +7,7 @@
 #include <vector>
 using namespace std;
 
-MainController::MainController(function<void(function<void(Event)>)> createViewCallback, function<void(const vector<Event *> &events)> editViewCb) : onCreateViewCallback(createViewCallback), onEditViewCallback(editViewCb) {}
+MainController::MainController(function<void(function<void(Event)>)> createViewCallback, function<void(const vector<Event *> &events)> editViewCb, function<void(const vector<Event *> &events)> deleteViewCb) : onCreateViewCallback(createViewCallback), onEditViewCallback(editViewCb), onDeleteViewCallback(deleteViewCb) {}
 
 void MainController::handleDisplay()
 {
@@ -61,8 +61,11 @@ void MainController::whileUserMenuSelection()
             break;
         }
         case 'd':
-            cout << "Waiting for delete option to be ready";
+        {
+            vector<Event *> events = selectedView == ViewMode::Daily ? mainView.getDailyEvents() : mainView.getWeeklyEvents();
+            onDeleteViewCallback(events);
             break;
+        }
         case 'q':
             cout << "Quit";
             break;

@@ -79,7 +79,7 @@ void EditController::selectEventHearing()
     char command = '\0';
     while (isMenuHearing)
     {
-        cout << "Please select an event from the list to edit: ";
+        cout << "Please select an event from the list to edit or 'q' to quit: ";
         cin >> command;
 
         if (command == 'q')
