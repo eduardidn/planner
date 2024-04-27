@@ -7,7 +7,7 @@
 #include <chrono>
 using namespace std;
 
-CreateController::CreateController(std::function<void()> createViewCallback) : onShowMainViewCallback(createViewCallback) {}
+CreateController::CreateController(function<void()> createViewCallback) : onShowMainViewCallback(createViewCallback) {}
 
 void CreateController::handleDisplay()
 {
@@ -51,26 +51,24 @@ void CreateController::whileUserMenuSelection()
             setEventPriorityField();
             break;
         case 's':
-            // save
+            saveEvent();
             break;
         default:
-            cout << "Invalid command, Please select a valid option from the main." << endl;
+            cout << "Invalid command, Please select a valid option from the menu." << endl;
             break;
         }
     };
 
     if (command == 'q')
     {
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        setIsMenuHearing(false);
-        onShowMainViewCallback();
+        redirectToMainView();
     }
 }
 
 /* --------------------------------- Helpers -------------------------------- */
 void CreateController::setEventStringField(const string &field, const string &value)
 {
-    createView.clearView();
+    ConsoleUtils::clearScreen();
     string fieldValue = ConsoleUtils::getEventStringField(field, value);
     newEventFields[field] = fieldValue;
     handleDisplay();
@@ -78,7 +76,7 @@ void CreateController::setEventStringField(const string &field, const string &va
 
 void CreateController::setEventDateField()
 {
-    createView.clearView();
+    ConsoleUtils::clearScreen();
     cout << "Enter the date of the event" << endl;
     string date = ConsoleUtils::getEventDateField();
     newEventFields["date"] = date;
@@ -87,7 +85,7 @@ void CreateController::setEventDateField()
 
 void CreateController::setEventTimeField()
 {
-    createView.clearView();
+    ConsoleUtils::clearScreen();
     cout << "Enter the time of the event" << endl;
     string time = ConsoleUtils::getEventTimeField();
     newEventFields["time"] = time;
@@ -96,7 +94,7 @@ void CreateController::setEventTimeField()
 
 void CreateController::setEventFrequencyField()
 {
-    createView.clearView();
+    ConsoleUtils::clearScreen();
     cout << "Enter the frequency of the event" << endl;
     string frequency = ConsoleUtils::getEventFrequencyField();
     newEventFields["frequency"] = frequency;
@@ -105,11 +103,37 @@ void CreateController::setEventFrequencyField()
 
 void CreateController::setEventPriorityField()
 {
-    createView.clearView();
+    ConsoleUtils::clearScreen();
     cout << "Enter the priority of the event" << endl;
     string priority = ConsoleUtils::getEventPriorityField();
     newEventFields["priority"] = priority;
     handleDisplay();
+}
+
+void CreateController::saveEvent()
+{
+    Event newEvent(
+        newEventFields["title"],
+        newEventFields["description"],
+        newEventFields["date"],
+        newEventFields["time"],
+        newEventFields["frequency"],
+        newEventFields["priority"]);
+    onCreateEventCallback(newEvent);
+    redirectToMainView();
+}
+
+void CreateController::redirectToMainView()
+{
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    resetState();
+    onShowMainViewCallback();
+}
+
+void CreateController::resetState()
+{
+    newEventFields = {};
+    isMenuHearing = false;
 }
 
 /* --------------------------------- Getters -------------------------------- */
@@ -122,4 +146,9 @@ bool CreateController::getIsMenuHearing()
 void CreateController::setIsMenuHearing(bool value)
 {
     isMenuHearing = value;
+}
+
+void CreateController::setOnCreateEventCallback(function<void(Event)> cb)
+{
+    onCreateEventCallback = cb;
 }

@@ -5,6 +5,12 @@
 #include <string>
 using namespace std;
 
+#ifdef _WIN32
+#define CLEAR "cls"
+#else
+#define CLEAR "clear"
+#endif
+
 namespace ConsoleUtils
 {
     void displayOption(const string &option, const string &action, const string &description)
@@ -38,7 +44,7 @@ namespace ConsoleUtils
     string getEventStringField(const string &field, const string &value)
     {
         cout << value << ": ";
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         string fieldValue;
         getline(cin, fieldValue);
@@ -76,7 +82,7 @@ namespace ConsoleUtils
             cin >> day;
         }
 
-        return to_string(year) + "-" + to_string(month) + "/" + to_string(day);
+        return to_string(year) + "-" + to_string(month) + "-" + to_string(day);
     }
 
     string getEventTimeField()
@@ -177,5 +183,10 @@ namespace ConsoleUtils
         default:
             return "unknown";
         }
+    }
+
+    void clearScreen()
+    {
+        system(CLEAR);
     }
 }

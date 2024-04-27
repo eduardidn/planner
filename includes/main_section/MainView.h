@@ -8,13 +8,26 @@
 
 class MainView : public IView
 {
+private:
+    vector<Event *> dailyEvents;
+    vector<Event *> weeklyEventMain;
+
 public:
+    MainView();
     void display() override;
     void displayMenuOptions() override;
     void displayWeeklyView();
 
     /* --------------------------------- Helpers -------------------------------- */
-    void displayTable(vector<Event> eventMain);
+    void displayTable(const vector<Event *> &events);
+
+    /* --------------------------------- Getters -------------------------------- */
+    vector<Event *> getDailyEvents();
+    vector<Event *> getWeeklyEvents();
+
+    /* --------------------------------- Setters -------------------------------- */
+    void setDailyEvents(vector<Event *> events);
+    void setWeeklyEvents(vector<Event *> events);
 };
 
 #endif // MAIN_VIEW_H

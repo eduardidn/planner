@@ -69,6 +69,11 @@
     "type_traits": "cpp",
     "utility": "cpp",
     "cinttypes": "cpp",
-    "map": "cpp"
+    "map": "cpp",
+    "thread": "cpp",
+    "list": "cpp",
+    "span": "cpp",
+    "stack": "cpp",
+    "ranges": "cpp"
   }
 }

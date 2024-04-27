@@ -11,6 +11,7 @@ namespace ConsoleUtils
     string getEventTimeField();
     string getEventFrequencyField();
     string getEventPriorityField();
+    void clearScreen();
 }
 
 #endif // CONSOLE_UTILS_H

@@ -1,9 +1,11 @@
-#ifndef MAIN_CONTROLLER_H
-#define MAIN_CONTROLLER_H
+#ifndef VIEW_CONTROLLER_H
+#define VIEW_CONTROLLER_H
 
 #include "models/IController.h"
 #include "models/Event.h"
 #include "main_section/MainView.h"
+
+#include <vector>
 
 class MainController : public IController
 {
@@ -11,10 +13,11 @@ class MainController : public IController
 private:
     bool isMenuHearing = false;
     MainView mainView;
-    function<void()> onCreateViewCallback;
+    function<void(function<void(Event)>)> onCreateViewCallback;
+    function<void(const vector<Event *> &events)> onEditViewCallback;
 
 public:
-    MainController(std::function<void()> createViewCb);
+    MainController(function<void(function<void(Event)>)> createViewCb, function<void(const vector<Event *> &events)> editViewCb);
     enum ViewMode
     {
         Daily,
@@ -25,6 +28,7 @@ public:
     void handleDisplay() override;
     void handleDisplayWeeklyView();
     void switchViews();
+    void addEvent(const Event &event);
 
     /* --------------------------------- Getters -------------------------------- */
     bool getIsMenuHearing();
@@ -34,4 +38,4 @@ public:
     void setIsMenuHearing(bool value);
 };
 
-#endif // MAIN_CONTROLLER_H
+#endif // VIEW_CONTROLLER_H

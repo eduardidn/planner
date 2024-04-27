@@ -1,24 +1,27 @@
-#ifndef CREATE_CONTROLLER_H
-#define CREATE_CONTROLLER_H
+#ifndef EDIT_CONTROLLER_H
+#define EDIT_CONTROLLER_H
 
 #include "models/IController.h"
 #include "models/Event.h"
-#include "create_section/CreateView.h"
+#include "edit_section/EditView.h"
 
-class CreateController : public IController
+class EditController : public IController
 {
 
 private:
     bool isMenuHearing = false;
-    CreateView createView;
-    map<string, string> newEventFields;
+    EditView editView;
+    vector<Event *> events;
+    map<string, string> EventToEditFields;
+    int eventIndex = -1;
     function<void()> onShowMainViewCallback;
-    function<void(Event)> onCreateEventCallback;
 
 public:
-    CreateController(function<void()> mainViewCb);
+    EditController(function<void()> mainViewCb);
     void whileUserMenuSelection() override;
     void handleDisplay() override;
+    void selectEventHearing();
+    void setEventToEdit(const int &id);
 
     /* --------------------------------- Helpers -------------------------------- */
     void setEventStringField(const string &field, const string &value);
@@ -26,7 +29,7 @@ public:
     void setEventTimeField();
     void setEventFrequencyField();
     void setEventPriorityField();
-    void saveEvent();
+    void editEvent();
     void redirectToMainView();
     void resetState();
 
@@ -35,7 +38,7 @@ public:
 
     /* --------------------------------- Setters -------------------------------- */
     void setIsMenuHearing(bool value);
-    void setOnCreateEventCallback(function<void(Event)> cb);
+    void setEvents(const vector<Event *> &events);
 };
 
-#endif // CREATE_CONTROLLER_H
+#endif // EDIT_CONTROLLER_H

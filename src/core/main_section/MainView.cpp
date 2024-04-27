@@ -14,27 +14,30 @@ using namespace std;
 #define CLEAR "clear"
 #endif
 
+MainView::MainView()
+{
+    dailyEvents = {
+        new Event("Event 1", "Description 1", "2021-10-10", "10:00 AM", "daily", "high"),
+        new Event("Event 2", "Description 2", "2021-10-11", "11:00 AM", "weekly", "medium")};
+
+    weeklyEventMain = {
+        new Event("Event 1", "Description 1", "2021-10-10", "10:00", "daily", "high"),
+        new Event("Event 2", "Description 2", "2021-10-11", "11:00", "weekly", "medium"),
+        new Event("Event 3", "Description 3", "2021-10-11", "11:00", "weekly", "medium"),
+        new Event("Event 4", "Description 4", "2021-10-11", "11:00", "weekly", "medium")};
+}
+
 void MainView::display()
 {
-    system(CLEAR);
-    vector<Event> eventMain = {
-        Event("Event 1", "Description 1", "2021-10-10", "10:00 AM", "daily", "high"),
-        Event("Event 2", "Description 2", "2021-10-11", "11:00 AM", "weekly", "medium")};
+    ConsoleUtils::clearScreen();
     cout << "Here are your events:" << endl;
-
-    this->displayTable(eventMain);
+    this->displayTable(dailyEvents);
     displayMenuOptions();
 }
 
 void MainView::displayWeeklyView()
 {
-    system(CLEAR);
-    vector<Event>
-        weeklyEventMain = {
-            Event("Event 1", "Description 1", "2021-10-10", "10:00", "daily", "high"),
-            Event("Event 2", "Description 2", "2021-10-11", "11:00", "weekly", "medium"),
-            Event("Event 3", "Description 3", "2021-10-11", "11:00", "weekly", "medium"),
-            Event("Event 4", "Description 4", "2021-10-11", "11:00", "weekly", "medium")};
+    ConsoleUtils::clearScreen();
 
     cout << "Here are your events for the week:" << endl;
 
@@ -59,7 +62,7 @@ void MainView::displayMenuOptions()
 }
 
 /* --------------------------------- Helpers -------------------------------- */
-void MainView::displayTable(vector<Event> eventMain)
+void MainView::displayTable(const vector<Event *> &events)
 {
     cout << endl;
     cout << left << setw(10) << "Event" << setw(20) << "Description"
@@ -67,13 +70,37 @@ void MainView::displayTable(vector<Event> eventMain)
          << "Recurring" << setw(10) << "Priority" << endl;
     cout << string(75, '-') << endl;
 
-    for (const Event &event : eventMain)
+    for (const auto &event : events)
     {
-        cout << left << setw(10) << event.getName()
-             << setw(20) << event.getDescription()
-             << setw(15) << event.getDate()
-             << setw(10) << event.getTime()
-             << setw(10) << event.getRecurring()
-             << setw(10) << event.getPriority() << endl;
+
+        cout << left << setw(10) << event->getTitle()
+             << setw(20) << event->getDescription()
+             << setw(15) << event->getDate()
+             << setw(10) << event->getTime()
+             << setw(10) << event->getFrequency()
+             << setw(10) << event->getPriority() << endl;
     }
+}
+
+/* --------------------------------- Getters -------------------------------- */
+vector<Event *> MainView::getDailyEvents()
+{
+    return dailyEvents;
+}
+
+vector<Event *> MainView::getWeeklyEvents()
+{
+    return weeklyEventMain;
+}
+
+/* --------------------------------- Setters -------------------------------- */
+
+void MainView::setDailyEvents(vector<Event *> events)
+{
+    dailyEvents = events;
+}
+
+void MainView::setWeeklyEvents(vector<Event *> events)
+{
+    weeklyEventMain = events;
 }
