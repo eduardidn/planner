@@ -91,6 +91,8 @@ void DeleteController::setEventToDelete(const int &index)
 void DeleteController::deleteEvent()
 {
     events[eventIndex]->deleteEvent();
+    delete events[eventIndex];
+    events.erase(events.begin() + eventIndex);
     redirectToMainView();
 }
 
