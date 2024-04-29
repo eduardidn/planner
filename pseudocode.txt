@@ -1,0 +1,128 @@
+// Main program execution
+Main {
+    // Startup of the program
+}
+
+// View Manager class
+class ViewManager {
+    function showMainView() {
+        // displays the main view
+    }
+
+    function showCreateView() {
+        // Displays create view
+    }
+
+    function showEditView() {
+        // Displays edit View
+    }
+
+    function showDeleteView() {
+        // Displays delete view
+    }
+}
+
+// Main View class
+class MainView {
+    function display() {
+        // display main view events
+    }
+
+     function displayWeeklyEvents() {
+        // display weekly events
+    }
+
+    function handleUserInput() {
+        command
+        switch(command) {
+            case "create":
+                createView = new CreateView()
+                createView.display()
+                break
+            case "edit":
+                editView = new EditView()
+                editView.display()
+                break
+            case "delete":
+                deleteView = new DeleteView()
+                deleteView.display()
+                break
+            case "switchView":
+                switchView()
+                break
+        }
+    }
+
+    function switchView() {
+       // Switch between view types
+    }
+}
+
+// Create View class
+class CreateView {
+    function display() {
+        // display event fields that can be filled
+    }
+
+    function displayMenuOptions() {
+        // display menu of options that the user can select
+    }
+}
+
+// Edit View class
+class EditView {
+    Event event
+
+    constructor(eventId) {
+        // set the event to edit on the class
+    }
+
+    function display() {
+       // display the event details to edit
+    }
+
+    function displayMenuOptions() {
+        // displays the menu options the user can select on this view
+    }
+}
+
+// Delete View class
+class DeleteView {
+    Event[] events
+
+    function display() {
+        // display all the events that can be deleted
+    }
+
+    displayMenuOptions {
+        // display the available options to select
+        // confirm if the users wants to delete the event
+    }
+}
+
+// Event class
+class Event {
+    int id
+    string title
+    string description
+    string date
+    string time
+    string frequency
+    string priority
+
+    constructor(data) {
+        // Initialize properties
+    }
+
+    function save() {
+        // Save to database
+    }
+
+    function edit(changes) {
+        // Apply changes and update in database
+    }
+
+    function delete() {
+        // Delete from database
+    }
+}
