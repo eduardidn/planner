@@ -1,31 +1,37 @@
-# Project Name
-
-Planner
+# Project Name: Planner
 
 ## Description
 
-A tool to schedule events and to manage them
+The Planner is a versatile tool designed to schedule and manage events efficiently. It offers a user-friendly interface and robust features that cater to diverse scheduling needs.
 
 ## Features
 
-- [List the main features of your project.]
+- Add, edit, and delete events
+- View events in a daily, weekly, or monthly calendar
+- Search for events by keywords
+- Sync with external calendar services (describe which services are supported if applicable)
+- Notifications and reminders
 
 ## Installation
 
-This projects needs the following libraries:
+Before you begin the installation, ensure you have the following prerequisites installed:
 
-- cmake
-- pqxx
+- `cmake` (version 3.20 or higher)
+- `conan`
 
-To run the project the path to pqxx has to be redefined based on the user device (pkg-config had problems to find it)
+### Build and Run
 
-### Compilation steps:
+To compile and run the project, follow these steps:
 
-From the source folder run:
+1. **Set permissions for the script:**
+
+   ````bash
+   chmod +x ./build_dev.sh```
+
+   ````
+
+2. **Run the build script:**
 
 ```
-cd build
-rm -rf *
-cmake ..
-make
+./build_dev.sh
 ```

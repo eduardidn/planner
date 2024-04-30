@@ -74,6 +74,11 @@
     "list": "cpp",
     "span": "cpp",
     "stack": "cpp",
-    "ranges": "cpp"
-  }
+    "ranges": "cpp",
+    "pqxx": "cpp",
+    "__memory": "cpp",
+    "charconv": "cpp",
+    "fstream": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }
