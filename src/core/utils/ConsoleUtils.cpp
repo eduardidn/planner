@@ -44,11 +44,17 @@ namespace ConsoleUtils
 
     string getEventStringField(const string &field, const string &value)
     {
-        cout << value << ": ";
+        cout << value << " (max 255 caracteres)"
+             << ": ";
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         string fieldValue;
         getline(cin, fieldValue);
+
+        if (fieldValue.length() > 255)
+        {
+            fieldValue = fieldValue.substr(0, 255);
+        }
         return fieldValue;
     }
 
