@@ -19,14 +19,20 @@ pqxx::result EventRepository::listWeeklyEvents()
     return results;
 }
 
-void EventRepository::addEvent(const string &name, const string &date)
+void EventRepository::addEvent(const string &name, const string &description, const string &date, const string &time, const string &frequency, const string &priority)
 {
-    string query = "INSERT INTO events (name, date) VALUES ('" + name + "', '" + date + "');";
+    string query = "INSERT INTO events (title, description, event_date, event_time, frequency, priority) VALUES ('" + name + "', '" + description + "', '" + date + "', '" + time + "', '" + frequency + "', '" + priority + "');";
     db.executeQuery(query);
 }
 
-void EventRepository::editEvent(int id, const string &name, const string &date)
+void EventRepository::editEvent(const int &id, const string &name, const string &description, const string &date, const string &time, const string &frequency, const string &priority)
 {
-    string query = "UPDATE events SET name = '" + name + "', date = '" + date + "' WHERE id = " + to_string(id) + ";";
+    string query = "UPDATE events SET title = '" + name + "', description = '" + description + "', event_date = '" + date + "', event_time = '" + time + "', frequency = '" + frequency + "', priority = '" + priority + "' WHERE id = " + to_string(id) + ";";
+    db.executeQuery(query);
+}
+
+void EventRepository::deleteEvent(const int &id)
+{
+    string query = "DELETE FROM events WHERE id = " + to_string(id) + ";";
     db.executeQuery(query);
 }

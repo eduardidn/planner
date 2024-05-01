@@ -1,4 +1,5 @@
 #include "create_section/CreateController.h"
+#include "database/repositories/EventRepository.h"
 #include "utils/ConsoleUtils.h"
 #include "utils/EventUtils.h"
 
@@ -8,7 +9,7 @@
 #include <chrono>
 using namespace std;
 
-CreateController::CreateController(function<void()> createViewCallback) : onShowMainViewCallback(createViewCallback) {}
+CreateController::CreateController(EventRepository &eventRepository, function<void()> createViewCallback) : onShowMainViewCallback(createViewCallback), repository(eventRepository) {}
 
 void CreateController::handleDisplay()
 {
@@ -116,16 +117,27 @@ void CreateController::saveEvent()
     bool canSaveEvent = EventUtils::validateEvent(newEventFields);
     if (!canSaveEvent)
         return;
+    if (newEventFields["frequency"].empty())
+    {
+        newEventFields["frequency"] = "once";
+    }
 
-    Event newEvent(
-        newEventFields["title"],
-        newEventFields["description"],
-        newEventFields["date"],
-        newEventFields["time"],
-        newEventFields["frequency"].empty() ? "once" : newEventFields["frequency"],
-        newEventFields["priority"]);
-    onCreateEventCallback(newEvent);
-    redirectToMainView();
+    if (newEventFields["priority"].empty())
+    {
+        newEventFields["priority"] = "low";
+    }
+
+    Event newEvent(newEventFields, repository);
+    try
+    {
+        newEvent.saveEvent();
+        onCreateEventCallback();
+        redirectToMainView();
+    }
+    catch (const pqxx::sql_error &e)
+    {
+        cerr << "Something went wrong, please try again ";
+    }
 }
 
 void CreateController::redirectToMainView()
@@ -153,7 +165,7 @@ void CreateController::setIsMenuHearing(bool value)
     isMenuHearing = value;
 }
 
-void CreateController::setOnCreateEventCallback(function<void(Event)> cb)
+void CreateController::setOnCreateEventCallback(function<void()> cb)
 {
     onCreateEventCallback = cb;
 }

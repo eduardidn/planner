@@ -10,7 +10,11 @@
 #include <vector>
 using namespace std;
 
-MainController::MainController(EventRepository &eventRepository, function<void(function<void(Event)>)> createViewCallback, function<void(const vector<Event *> &events)> editViewCb, function<void(const vector<Event *> &events)> deleteViewCb) : onCreateViewCallback(createViewCallback), onEditViewCallback(editViewCb), onDeleteViewCallback(deleteViewCb), repository(eventRepository)
+MainController::MainController(EventRepository &eventRepository, function<void(function<void()>)> createViewCallback, function<void(const vector<Event *> &events)> editViewCb, function<void(const vector<Event *> &events)> deleteViewCb)
+    : onCreateViewCallback(createViewCallback),
+      onEditViewCallback(editViewCb),
+      onDeleteViewCallback(deleteViewCb),
+      repository(eventRepository)
 {
 }
 
@@ -70,7 +74,7 @@ void MainController::whileUserMenuSelection()
         }
         case 'a':
         {
-            auto addEventCallback = bind(&MainController::addEvent, this, placeholders::_1);
+            auto addEventCallback = bind(&MainController::addEvent, this);
             onCreateViewCallback(addEventCallback);
             break;
         }
@@ -101,15 +105,18 @@ void MainController::switchViews()
     handleDisplay();
 }
 
-void MainController::addEvent(const Event &event)
+void MainController::addEvent()
 {
-    vector<Event *> currentEvents = selectedView == ViewMode::Daily ? mainView.getDailyEvents() : mainView.getWeeklyEvents();
-    Event *newEvent = new Event(event);
-    currentEvents.push_back(newEvent);
+    mainView.setDailyEvents({});
+    mainView.setWeeklyEvents({});
     if (selectedView == ViewMode::Daily)
-        mainView.setDailyEvents(currentEvents);
+    {
+        handleDisplay();
+    }
     else
-        mainView.setWeeklyEvents(currentEvents);
+    {
+        handleDisplayWeeklyView();
+    }
 }
 
 /* --------------------------------- Helpers -------------------------------- */
@@ -143,7 +150,8 @@ vector<Event *> MainController::parseEvents(pqxx::result result)
             event["event_date"].as<string>(),
             event["event_time"].as<string>(),
             event["frequency"].as<string>(),
-            event["priority"].as<string>()));
+            event["priority"].as<string>(),
+            repository));
     }
     return events;
 }

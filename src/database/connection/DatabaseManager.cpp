@@ -6,7 +6,7 @@
 using namespace std;
 
 // provisional way to use env variables without using dot-env
-void load_dotenv(const string &filename)
+void loadDotenv(const string &filename)
 {
     ifstream file(filename);
     string line;
@@ -22,7 +22,7 @@ void load_dotenv(const string &filename)
 DatabaseManager::DatabaseManager()
 {
     cout << "Connecting to the database..." << endl;
-    load_dotenv(".env");
+    loadDotenv(".env");
     string dbname = getenv("DB_NAME");
     string user = getenv("DB_USER");
     string password = getenv("DB_PASSWORD");

@@ -19,7 +19,7 @@ private:
 public:
     ViewManager(EventRepository &eventRepository);
     void showMainView();
-    void showCreateView(function<void(Event)>);
+    void showCreateView(function<void()>);
     void showEditView(const vector<Event *> &events);
     void showDeleteView(const vector<Event *> &events);
 };

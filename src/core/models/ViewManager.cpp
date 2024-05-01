@@ -2,13 +2,13 @@
 
 ViewManager::ViewManager(EventRepository &eventRepository)
     : mainController(
-          eventRepository, [this](function<void(Event)> eventCallback)
-          { this->showCreateView(eventCallback); },
+          eventRepository, [this](function<void()> addEventCallback)
+          { this->showCreateView(addEventCallback); },
           [this](const vector<Event *> &events)
           { this->showEditView(events); },
           [this](const vector<Event *> &events)
           { this->showDeleteView(events); }),
-      createController([this]()
+      createController(eventRepository, [this]()
                        { this->showMainView(); }),
       editController([this]()
                      { this->showMainView(); }),
@@ -23,7 +23,7 @@ void ViewManager::showMainView()
     mainController.handleDisplay();
 }
 
-void ViewManager::showCreateView(function<void(Event)> createEventCb)
+void ViewManager::showCreateView(function<void()> createEventCb)
 {
     createController.setOnCreateEventCallback(createEventCb);
     createController.handleDisplay();

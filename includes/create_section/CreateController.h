@@ -4,6 +4,7 @@
 #include "models/IController.h"
 #include "models/Event.h"
 #include "create_section/CreateView.h"
+#include "database/repositories/EventRepository.h"
 
 class CreateController : public IController
 {
@@ -13,10 +14,11 @@ private:
     CreateView createView;
     map<string, string> newEventFields;
     function<void()> onShowMainViewCallback;
-    function<void(Event)> onCreateEventCallback;
+    function<void()> onCreateEventCallback;
+    EventRepository &repository;
 
 public:
-    CreateController(function<void()> mainViewCb);
+    CreateController(EventRepository &EventRepository, function<void()> mainViewCb);
     void whileUserMenuSelection() override;
     void handleDisplay() override;
 
@@ -35,7 +37,7 @@ public:
 
     /* --------------------------------- Setters -------------------------------- */
     void setIsMenuHearing(bool value);
-    void setOnCreateEventCallback(function<void(Event)> cb);
+    void setOnCreateEventCallback(function<void()> cb);
 };
 
 #endif // CREATE_CONTROLLER_H

@@ -39,7 +39,7 @@ void CreateView::displayMenuOptions()
     ConsoleUtils::displayOption("3", "Date", "Enter the date of the event. (Required )");
     ConsoleUtils::displayOption("4", "Time", "Enter the time of the event. (Required )");
     ConsoleUtils::displayOption("5", "Frequency", "Enter the frequency of the event. (default: once)");
-    ConsoleUtils::displayOption("6", "Priority", "Enter the priority of the event.");
+    ConsoleUtils::displayOption("6", "Priority", "Enter the priority of the event. (default: low)");
     ConsoleUtils::displayOption("s", "Save", "Save this event.");
     ConsoleUtils::displayOption("q", "Exit", "Go back to the main menu.");
 }

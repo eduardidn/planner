@@ -3,14 +3,18 @@
 
 #include "database/connection/DatabaseManager.h"
 
+#include <string>
+using namespace std;
+
 class EventRepository
 {
 public:
     EventRepository(DatabaseManager &dbManager);
     pqxx::result listDailyEvents();
     pqxx::result listWeeklyEvents();
-    void addEvent(const std::string &name, const std::string &date);
-    void editEvent(int id, const std::string &name, const std::string &date);
+    void addEvent(const string &name, const string &description, const string &date, const string &time, const string &frequency, const string &priority);
+    void editEvent(const int &id, const string &name, const string &description, const string &date, const string &time, const string &frequency, const string &priority);
+    void deleteEvent(const int &id);
 
 private:
     DatabaseManager &db;
