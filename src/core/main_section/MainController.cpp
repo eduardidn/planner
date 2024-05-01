@@ -1,6 +1,8 @@
 #include "main_section/MainController.h"
 #include "database/repositories/EventRepository.h"
 #include "models/Event.h"
+#include "utils/ConsoleUtils.h"
+#include "utils/ExceptionUtils.h"
 
 #include <iostream>
 #include <iomanip>
@@ -15,6 +17,12 @@ MainController::MainController(EventRepository &eventRepository, function<void(f
 void MainController::handleDisplay()
 {
     setSelectedView(ViewMode::Daily);
+    if (mainView.getDailyEvents().size() == 0)
+    {
+        auto fetchDailyEventsFunc = bind(&MainController::fetchDailyEvents, this);
+        handleFunctionErrorsAndExit<void>(fetchDailyEventsFunc);
+    }
+
     mainView.display();
     if (!isMenuHearing)
     {
@@ -25,6 +33,12 @@ void MainController::handleDisplay()
 void MainController::handleDisplayWeeklyView()
 {
     setSelectedView(ViewMode::Weekly);
+    if (mainView.getWeeklyEvents().size() == 0)
+    {
+        auto fetchWeeklyEventsFunc = bind(&MainController::fetchWeeklyEvents, this);
+        handleFunctionErrorsAndExit<void>(fetchWeeklyEventsFunc);
+    }
+
     mainView.displayWeeklyView();
     if (!isMenuHearing)
     {
@@ -47,9 +61,6 @@ void MainController::whileUserMenuSelection()
         {
         case 'v':;
             switchViews();
-            break;
-        case 'f':
-            cout << "Waiting for connection with the DB to do this";
             break;
         case 'e':
         {
@@ -99,6 +110,42 @@ void MainController::addEvent(const Event &event)
         mainView.setDailyEvents(currentEvents);
     else
         mainView.setWeeklyEvents(currentEvents);
+}
+
+/* --------------------------------- Helpers -------------------------------- */
+void MainController::fetchDailyEvents()
+{
+    ConsoleUtils::clearScreen();
+    cout << "Fetching events..." << endl;
+    pqxx::result result = repository.listDailyEvents();
+    vector<Event *> events = parseEvents(result);
+    mainView.setDailyEvents(events);
+}
+
+void MainController::fetchWeeklyEvents()
+{
+    ConsoleUtils::clearScreen();
+    cout << "Fetching events..." << endl;
+    pqxx::result result = repository.listWeeklyEvents();
+    vector<Event *> events = parseEvents(result);
+    mainView.setWeeklyEvents(events);
+}
+
+vector<Event *> MainController::parseEvents(pqxx::result result)
+{
+    vector<Event *> events;
+    for (const auto &event : result)
+    {
+        events.push_back(new Event(
+            event["id"].as<int>(),
+            event["title"].as<string>(),
+            event["description"].as<string>(),
+            event["event_date"].as<string>(),
+            event["event_time"].as<string>(),
+            event["frequency"].as<string>(),
+            event["priority"].as<string>()));
+    }
+    return events;
 }
 
 /* --------------------------------- Getters -------------------------------- */

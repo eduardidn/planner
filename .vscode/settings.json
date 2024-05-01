@@ -79,7 +79,8 @@
     "__memory": "cpp",
     "charconv": "cpp",
     "fstream": "cpp",
-    "format": "cpp"
+    "format": "cpp",
+    "chrono": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

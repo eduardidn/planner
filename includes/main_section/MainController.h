@@ -33,6 +33,11 @@ public:
     void switchViews();
     void addEvent(const Event &event);
 
+    /* --------------------------------- Helpers -------------------------------- */
+    void fetchDailyEvents();
+    void fetchWeeklyEvents();
+    vector<Event *> parseEvents(pqxx::result result);
+
     /* --------------------------------- Getters -------------------------------- */
     bool getIsMenuHearing();
 

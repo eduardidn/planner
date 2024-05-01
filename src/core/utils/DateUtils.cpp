@@ -1,5 +1,8 @@
 #include <iostream>
+#include <string>
 #include <chrono>
+#include <sstream>
+#include <iomanip>
 using namespace std;
 
 namespace DateUtils
@@ -11,6 +14,20 @@ namespace DateUtils
         auto localTime = localtime(&nowCrono);
         int currentYear = 1900 + localTime->tm_year;
         return currentYear;
+    }
+
+    string getCurrentDate()
+    {
+        auto now = chrono::system_clock::now();
+        auto nowCrono = chrono::system_clock::to_time_t(now);
+        auto localTime = localtime(&nowCrono);
+        ostringstream dateStream;
+        dateStream << (localTime->tm_year + 1900) << "-"
+                   << setw(2) << setfill('0') << (localTime->tm_mon + 1) << "-"
+                   << setw(2) << setfill('0') << localTime->tm_mday;
+
+        string currentDate = dateStream.str();
+        return currentDate;
     }
 
     bool isLeapYear(int year)

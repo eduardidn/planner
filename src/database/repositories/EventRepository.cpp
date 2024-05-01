@@ -15,7 +15,7 @@ pqxx::result EventRepository::listDailyEvents()
 
 pqxx::result EventRepository::listWeeklyEvents()
 {
-    pqxx::result results = db.executeQuery("SELECT * FROM events WHERE event_date >= date_trunc('week', CURRENT_DATE) AND event_date < date_trunc('week', CURRENT_DATE) + interval '1 week';");
+    pqxx::result results = db.executeQuery("SELECT * FROM events WHERE event_date >= date_trunc('week', CURRENT_DATE)AND event_date < date_trunc('week', CURRENT_DATE) + interval '1 week';");
     return results;
 }
 

@@ -1,5 +1,6 @@
 #include "main_section/MainView.h"
 #include "utils/ConsoleUtils.h"
+#include "utils/DateUtils.h"
 #include "models/Event.h"
 
 #include <iostream>
@@ -14,24 +15,22 @@ using namespace std;
 #define CLEAR "clear"
 #endif
 
-MainView::MainView()
-{
-    dailyEvents = {
-        new Event("Event 1", "Description 1", "2021-10-10", "10:00 AM", "daily", "high"),
-        new Event("Event 2", "Description 2", "2021-10-11", "11:00 AM", "weekly", "medium")};
-
-    weeklyEventMain = {
-        new Event("Event 1", "Description 1", "2021-10-10", "10:00", "daily", "high"),
-        new Event("Event 2", "Description 2", "2021-10-11", "11:00", "weekly", "medium"),
-        new Event("Event 3", "Description 3", "2021-10-11", "11:00", "weekly", "medium"),
-        new Event("Event 4", "Description 4", "2021-10-11", "11:00", "weekly", "medium")};
-}
+MainView::MainView() {}
 
 void MainView::display()
 {
     ConsoleUtils::clearScreen();
-    cout << "Here are your events:" << endl;
-    this->displayTable(dailyEvents);
+    string currentDate = DateUtils::getCurrentDate();
+    cout << "Here are the events for today " << currentDate << endl;
+    if (dailyEvents.size() == 0)
+    {
+        cout << endl;
+        cout << "No events found." << endl;
+    }
+    else
+    {
+        this->displayTable(dailyEvents);
+    }
     displayMenuOptions();
 }
 
@@ -40,8 +39,15 @@ void MainView::displayWeeklyView()
     ConsoleUtils::clearScreen();
 
     cout << "Here are your events for the week:" << endl;
-
-    this->displayTable(weeklyEventMain);
+    if (weeklyEventMain.size() == 0)
+    {
+        cout << endl;
+        cout << "No events found." << endl;
+    }
+    else
+    {
+        this->displayTable(weeklyEventMain);
+    }
     displayMenuOptions();
 }
 
@@ -54,7 +60,6 @@ void MainView::displayMenuOptions()
     cout << string(95, '-') << endl;
 
     ConsoleUtils::displayOption("v", "Toggle view (weekly/daily)", "Switches the display between weekly and daily views.");
-    ConsoleUtils::displayOption("f", "Set view as favorite", "Marks the selected view as a favorite, highlighting it.");
     ConsoleUtils::displayOption("e", "Edit record", "Moves to the edit record screen to modify existing events.");
     ConsoleUtils::displayOption("a", "Add record", "Displays options on how the user can create a new record.");
     ConsoleUtils::displayOption("d", "Delete record", "Prompts the user to select records to delete from the available main.");
@@ -74,12 +79,21 @@ void MainView::displayTable(const vector<Event *> &events)
     {
 
         cout << left << setw(10) << event->getTitle()
-             << setw(20) << event->getDescription()
-             << setw(15) << event->getDate()
+             << setw(20) << truncate(event->getTitle(), 20)
+             << setw(30) << truncate(event->getDescription(), 30)
              << setw(10) << event->getTime()
              << setw(10) << event->getFrequency()
              << setw(10) << event->getPriority() << endl;
     }
+}
+
+string MainView::truncate(const string &str, int width)
+{
+    if (str.length() > width)
+    {
+        return str.substr(0, width - 3) + "...";
+    }
+    return str;
 }
 
 /* --------------------------------- Getters -------------------------------- */

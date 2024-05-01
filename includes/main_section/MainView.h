@@ -20,6 +20,7 @@ public:
 
     /* --------------------------------- Helpers -------------------------------- */
     void displayTable(const vector<Event *> &events);
+    string truncate(const string &str, int width);
 
     /* --------------------------------- Getters -------------------------------- */
     vector<Event *> getDailyEvents();
