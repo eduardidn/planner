@@ -9,13 +9,13 @@ EventRepository::EventRepository(DatabaseManager &dbManager) : db(dbManager) {}
 
 pqxx::result EventRepository::listDailyEvents()
 {
-    pqxx::result results = db.executeQuery("SELECT * FROM events WHERE event_date = CURRENT_DATE");
+    pqxx::result results = db.executeQuery("SELECT * FROM events WHERE event_date = CURRENT_DATE ORDER BY event_date ASC, event_time ASC;");
     return results;
 }
 
 pqxx::result EventRepository::listWeeklyEvents()
 {
-    pqxx::result results = db.executeQuery("SELECT * FROM events WHERE event_date >= date_trunc('week', CURRENT_DATE)AND event_date < date_trunc('week', CURRENT_DATE) + interval '1 week';");
+    pqxx::result results = db.executeQuery("SELECT * FROM events WHERE event_date >= date_trunc('week', CURRENT_DATE)AND event_date < date_trunc('week', CURRENT_DATE) + interval '1 week' ORDER BY event_date ASC, event_time ASC;");
     return results;
 }
 
