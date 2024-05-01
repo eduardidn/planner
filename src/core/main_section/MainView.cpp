@@ -39,14 +39,14 @@ void MainView::displayWeeklyView()
     ConsoleUtils::clearScreen();
 
     cout << "Here are your events for the week:" << endl;
-    if (weeklyEventMain.size() == 0)
+    if (weeklyEvents.size() == 0)
     {
         cout << endl;
         cout << "No events found." << endl;
     }
     else
     {
-        this->displayTable(weeklyEventMain);
+        this->displayTable(weeklyEvents);
     }
     displayMenuOptions();
 }
@@ -69,21 +69,33 @@ void MainView::displayMenuOptions()
 /* --------------------------------- Helpers -------------------------------- */
 void MainView::displayTable(const vector<Event *> &events)
 {
-    cout << endl;
-    cout << left << setw(10) << "Event" << setw(20) << "Description"
-         << setw(15) << "Date" << setw(10) << "Time" << setw(10)
-         << "Recurring" << setw(10) << "Priority" << endl;
-    cout << string(75, '-') << endl;
+    int dashesLength = 110;
 
+    cout << endl;
+
+    cout << left
+         << setw(5) << "#"
+         << setw(20) << "Title"
+         << setw(35) << "Description"
+         << setw(15) << "Date"
+         << setw(10) << "Time"
+         << setw(15) << "Recurring"
+         << setw(10) << "Priority" << endl;
+    cout << string(dashesLength, '-') << endl;
+
+    int index = 0;
     for (const auto &event : events)
     {
-
-        cout << left << setw(10) << event->getTitle()
+        cout << left
+             << setw(5) << index
              << setw(20) << truncate(event->getTitle(), 20)
-             << setw(30) << truncate(event->getDescription(), 30)
+             << setw(35) << truncate(event->getDescription(), 30)
+             << setw(15) << event->getDate()
              << setw(10) << event->getTime()
-             << setw(10) << event->getFrequency()
-             << setw(10) << event->getPriority() << endl;
+             << setw(15) << event->getFrequency()
+             << setw(10) << event->getPriority()
+             << endl;
+        index++;
     }
 }
 
@@ -104,7 +116,7 @@ vector<Event *> MainView::getDailyEvents()
 
 vector<Event *> MainView::getWeeklyEvents()
 {
-    return weeklyEventMain;
+    return weeklyEvents;
 }
 
 /* --------------------------------- Setters -------------------------------- */
@@ -116,5 +128,5 @@ void MainView::setDailyEvents(vector<Event *> events)
 
 void MainView::setWeeklyEvents(vector<Event *> events)
 {
-    weeklyEventMain = events;
+    weeklyEvents = events;
 }

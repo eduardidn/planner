@@ -10,7 +10,7 @@ class MainView : public IView
 {
 private:
     vector<Event *> dailyEvents;
-    vector<Event *> weeklyEventMain;
+    vector<Event *> weeklyEvents;
 
 public:
     MainView();
