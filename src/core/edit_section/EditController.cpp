@@ -170,8 +170,18 @@ void EditController::editEvent()
     bool canEditEvent = EventUtils::validateEvent(EventToEditFields);
     if (!canEditEvent)
         return;
-    events[eventIndex]->editEvent(EventToEditFields);
-    redirectToMainView();
+
+    try
+    {
+        events[eventIndex]
+            ->editEvent(EventToEditFields);
+        onEditEventCallback();
+        redirectToMainView();
+    }
+    catch (const pqxx::sql_error &e)
+    {
+        cerr << "Something went wrong, please try again ";
+    }
 }
 
 void EditController::redirectToMainView()
@@ -203,4 +213,9 @@ void EditController::setIsMenuHearing(bool value)
 void EditController::setEvents(const vector<Event *> &events)
 {
     this->events = events;
+}
+
+void EditController::setOnEditEventCallback(function<void()> cb)
+{
+    onEditEventCallback = cb;
 }

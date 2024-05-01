@@ -14,6 +14,7 @@ private:
     vector<Event *> events;
     int eventIndex = -1;
     function<void()> onShowMainViewCallback;
+    function<void()> onDeleteEventCallback;
 
 public:
     DeleteController(function<void()> mainViewCb);
@@ -30,6 +31,7 @@ public:
 
     /* --------------------------------- Setters -------------------------------- */
     void setEvents(const vector<Event *> &events);
+    void setOnDeleteEventCallback(function<void()> cb);
 };
 
 #endif // DELETE_CONTROLLER_H

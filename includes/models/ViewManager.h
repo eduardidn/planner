@@ -20,8 +20,8 @@ public:
     ViewManager(EventRepository &eventRepository);
     void showMainView();
     void showCreateView(function<void()>);
-    void showEditView(const vector<Event *> &events);
-    void showDeleteView(const vector<Event *> &events);
+    void showEditView(function<void()>, const vector<Event *> &events);
+    void showDeleteView(function<void()>, const vector<Event *> &events);
 };
 
 #endif // VIEW_MANAGER_H

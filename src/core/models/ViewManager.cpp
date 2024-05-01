@@ -4,10 +4,10 @@ ViewManager::ViewManager(EventRepository &eventRepository)
     : mainController(
           eventRepository, [this](function<void()> addEventCallback)
           { this->showCreateView(addEventCallback); },
-          [this](const vector<Event *> &events)
-          { this->showEditView(events); },
-          [this](const vector<Event *> &events)
-          { this->showDeleteView(events); }),
+          [this](function<void()> editEventCallback, const vector<Event *> &events)
+          { this->showEditView(editEventCallback, events); },
+          [this](function<void()> deleteEventCallback, const vector<Event *> &events)
+          { this->showDeleteView(deleteEventCallback, events); }),
       createController(eventRepository, [this]()
                        { this->showMainView(); }),
       editController([this]()
@@ -29,14 +29,16 @@ void ViewManager::showCreateView(function<void()> createEventCb)
     createController.handleDisplay();
 }
 
-void ViewManager::showEditView(const vector<Event *> &events)
+void ViewManager::showEditView(function<void()> editEventCb, const vector<Event *> &events)
 {
     editController.setEvents(events);
+    editController.setOnEditEventCallback(editEventCb);
     editController.handleDisplay();
 }
 
-void ViewManager::showDeleteView(const vector<Event *> &events)
+void ViewManager::showDeleteView(function<void()> deleteEventCb, const vector<Event *> &events)
 {
     deleteController.setEvents(events);
+    deleteController.setOnDeleteEventCallback(deleteEventCb);
     deleteController.handleDisplay();
 }

@@ -90,10 +90,16 @@ void DeleteController::setEventToDelete(const int &index)
 /* --------------------------------- Helpers -------------------------------- */
 void DeleteController::deleteEvent()
 {
-    events[eventIndex]->deleteEvent();
-    delete events[eventIndex];
-    events.erase(events.begin() + eventIndex);
-    redirectToMainView();
+    try
+    {
+        events[eventIndex]->deleteEvent();
+        onDeleteEventCallback();
+        redirectToMainView();
+    }
+    catch (const pqxx::sql_error &e)
+    {
+        cerr << "Something went wrong, please try again ";
+    }
 }
 
 void DeleteController::goBackToList()
@@ -119,4 +125,9 @@ void DeleteController::resetState()
 void DeleteController::setEvents(const vector<Event *> &events)
 {
     this->events = events;
+}
+
+void DeleteController::setOnDeleteEventCallback(function<void()> cb)
+{
+    onDeleteEventCallback = cb;
 }

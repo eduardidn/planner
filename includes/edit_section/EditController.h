@@ -15,6 +15,7 @@ private:
     map<string, string> EventToEditFields;
     int eventIndex = -1;
     function<void()> onShowMainViewCallback;
+    function<void()> onEditEventCallback;
 
 public:
     EditController(function<void()> mainViewCb);
@@ -38,6 +39,7 @@ public:
 
     /* --------------------------------- Setters -------------------------------- */
     void setIsMenuHearing(bool value);
+    void setOnEditEventCallback(function<void()> cb);
     void setEvents(const vector<Event *> &events);
 };
 

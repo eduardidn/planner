@@ -10,7 +10,7 @@
 #include <vector>
 using namespace std;
 
-MainController::MainController(EventRepository &eventRepository, function<void(function<void()>)> createViewCallback, function<void(const vector<Event *> &events)> editViewCb, function<void(const vector<Event *> &events)> deleteViewCb)
+MainController::MainController(EventRepository &eventRepository, function<void(function<void()>)> createViewCallback, function<void(function<void()>, const vector<Event *> &events)> editViewCb, function<void(function<void()>, const vector<Event *> &events)> deleteViewCb)
     : onCreateViewCallback(createViewCallback),
       onEditViewCallback(editViewCb),
       onDeleteViewCallback(deleteViewCb),
@@ -69,19 +69,21 @@ void MainController::whileUserMenuSelection()
         case 'e':
         {
             vector<Event *> events = selectedView == ViewMode::Daily ? mainView.getDailyEvents() : mainView.getWeeklyEvents();
-            onEditViewCallback(events);
+            auto reloadEventsCallback = bind(&MainController::reloadEvents, this);
+            onEditViewCallback(reloadEventsCallback, events);
             break;
         }
         case 'a':
         {
-            auto addEventCallback = bind(&MainController::addEvent, this);
-            onCreateViewCallback(addEventCallback);
+            auto reloadEventsCallback = bind(&MainController::reloadEvents, this);
+            onCreateViewCallback(reloadEventsCallback);
             break;
         }
         case 'd':
         {
             vector<Event *> events = selectedView == ViewMode::Daily ? mainView.getDailyEvents() : mainView.getWeeklyEvents();
-            onDeleteViewCallback(events);
+            auto reloadEventsCallback = bind(&MainController::reloadEvents, this);
+            onDeleteViewCallback(reloadEventsCallback, events);
             break;
         }
         case 'q':
@@ -105,7 +107,7 @@ void MainController::switchViews()
     handleDisplay();
 }
 
-void MainController::addEvent()
+void MainController::reloadEvents()
 {
     mainView.setDailyEvents({});
     mainView.setWeeklyEvents({});

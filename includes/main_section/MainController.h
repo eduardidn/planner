@@ -15,12 +15,12 @@ private:
     bool isMenuHearing = false;
     MainView mainView;
     function<void(function<void()>)> onCreateViewCallback;
-    function<void(const vector<Event *> &events)> onEditViewCallback;
-    function<void(const vector<Event *> &events)> onDeleteViewCallback;
+    function<void(function<void()>, const vector<Event *> &events)> onEditViewCallback;
+    function<void(function<void()>, const vector<Event *> &events)> onDeleteViewCallback;
     EventRepository &repository;
 
 public:
-    MainController(EventRepository &eventRepository, function<void(function<void()>)> createViewCb, function<void(const vector<Event *> &events)> editViewCb, function<void(const vector<Event *> &events)> deleteViewCb);
+    MainController(EventRepository &eventRepository, function<void(function<void()>)> createViewCb, function<void(function<void()>, const vector<Event *> &events)> editViewCb, function<void(function<void()>, const vector<Event *> &events)> deleteViewCb);
     enum ViewMode
     {
         Daily,
@@ -31,7 +31,7 @@ public:
     void handleDisplay() override;
     void handleDisplayWeeklyView();
     void switchViews();
-    void addEvent();
+    void reloadEvents();
 
     /* --------------------------------- Helpers -------------------------------- */
     void fetchDailyEvents();
