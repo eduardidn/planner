@@ -16,7 +16,7 @@ void handleFunctionErrorsAndExit(function<T()> func)
     }
     catch (const pqxx::sql_error &e)
     {
-        cerr << "SQL error: " << e.what() endl;
+        cerr << "SQL error: " << e.what() << endl;
         throw;
     }
     catch (const exception &e)
