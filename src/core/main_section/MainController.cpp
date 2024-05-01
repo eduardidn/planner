@@ -1,4 +1,5 @@
 #include "main_section/MainController.h"
+#include "database/repositories/EventRepository.h"
 #include "models/Event.h"
 
 #include <iostream>
@@ -7,7 +8,9 @@
 #include <vector>
 using namespace std;
 
-MainController::MainController(function<void(function<void(Event)>)> createViewCallback, function<void(const vector<Event *> &events)> editViewCb, function<void(const vector<Event *> &events)> deleteViewCb) : onCreateViewCallback(createViewCallback), onEditViewCallback(editViewCb), onDeleteViewCallback(deleteViewCb) {}
+MainController::MainController(EventRepository &eventRepository, function<void(function<void(Event)>)> createViewCallback, function<void(const vector<Event *> &events)> editViewCb, function<void(const vector<Event *> &events)> deleteViewCb) : onCreateViewCallback(createViewCallback), onEditViewCallback(editViewCb), onDeleteViewCallback(deleteViewCb), repository(eventRepository)
+{
+}
 
 void MainController::handleDisplay()
 {

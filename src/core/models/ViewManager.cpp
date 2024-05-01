@@ -1,12 +1,13 @@
 #include "models/ViewManager.h"
 
-ViewManager::ViewManager()
-    : mainController([this](function<void(Event)> eventCallback)
-                     { this->showCreateView(eventCallback); },
-                     [this](const vector<Event *> &events)
-                     { this->showEditView(events); },
-                     [this](const vector<Event *> &events)
-                     { this->showDeleteView(events); }),
+ViewManager::ViewManager(EventRepository &eventRepository)
+    : mainController(
+          eventRepository, [this](function<void(Event)> eventCallback)
+          { this->showCreateView(eventCallback); },
+          [this](const vector<Event *> &events)
+          { this->showEditView(events); },
+          [this](const vector<Event *> &events)
+          { this->showDeleteView(events); }),
       createController([this]()
                        { this->showMainView(); }),
       editController([this]()

@@ -21,6 +21,7 @@ void load_dotenv(const string &filename)
 
 DatabaseManager::DatabaseManager()
 {
+    cout << "Connecting to the database..." << endl;
     load_dotenv(".env");
     string dbname = getenv("DB_NAME");
     string user = getenv("DB_USER");

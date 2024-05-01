@@ -2,6 +2,7 @@
 #define VIEW_MANAGER_H
 
 #include "models/IView.h"
+#include "database/repositories/EventRepository.h"
 #include "main_section/MainController.h"
 #include "create_section/CreateController.h"
 #include "edit_section/EditController.h"
@@ -16,7 +17,7 @@ private:
     DeleteController deleteController;
 
 public:
-    ViewManager();
+    ViewManager(EventRepository &eventRepository);
     void showMainView();
     void showCreateView(function<void(Event)>);
     void showEditView(const vector<Event *> &events);

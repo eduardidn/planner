@@ -78,7 +78,8 @@
     "pqxx": "cpp",
     "__memory": "cpp",
     "charconv": "cpp",
-    "fstream": "cpp"
+    "fstream": "cpp",
+    "format": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
