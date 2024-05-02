@@ -8,17 +8,11 @@
 
 class DeleteView : public IView
 {
-private:
-    Event *selectedEvent;
-
 public:
-    DeleteView() : selectedEvent(nullptr) {}
     void display() override;
     void displayMenuOptions() override;
     void displayEvents(const vector<Event *> &events);
-
-    /* --------------------------------- Setters -------------------------------- */
-    void setSelectedEvent(Event *event);
+    void displayEventFields(const Event &event);
 };
 
 #endif // DELETE_VIEW_H

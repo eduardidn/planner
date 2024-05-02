@@ -42,7 +42,7 @@ void DetailController::whileUserMenuSelection()
             redirectToEditView();
             break;
         case 'd':
-            // onDeleteViewCallback(onGoBack, events[eventIndex]);
+            redirectToDeleteView();
             break;
         default:
             cout << "Invalid command, Please select a valid option from the menu." << endl;
@@ -72,6 +72,14 @@ void DetailController::redirectToEditView()
     resetState();
 }
 
+void DetailController::redirectToDeleteView()
+{
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    auto onDeleteCb = bind(&DetailController::onDeleteCallback, this);
+    onDeleteViewCallback(onDeleteCb, event.value());
+    resetState();
+}
+
 void DetailController::resetState()
 {
     event.reset();
@@ -80,7 +88,12 @@ void DetailController::resetState()
 
 void DetailController::onEditCallback()
 {
-    orReloadCb();
+    onReloadCb();
+}
+
+void DetailController::onDeleteCallback()
+{
+    onReloadCb();
 }
 
 /* --------------------------------- Getters -------------------------------- */
@@ -102,5 +115,5 @@ void DetailController::setEvent(const Event &newEvent)
 
 void DetailController::setOnReloadCallback(const function<void()> &cb)
 {
-    orReloadCb = cb;
+    onReloadCb = cb;
 }

@@ -13,15 +13,16 @@ DeleteController::DeleteController(function<void()> mainViewCallback) : onShowMa
 void DeleteController::handleDisplay()
 {
     deleteView.display();
-    if (eventIndex == -1)
+    if (eventToDelete.has_value())
     {
-        deleteView.displayEvents(events);
-        selectEventHearing();
+        deleteView.displayMenuOptions();
+        deleteView.displayEventFields(eventToDelete.value());
+        whileUserMenuSelection();
     }
     else
     {
-        deleteView.displayMenuOptions();
-        whileUserMenuSelection();
+        deleteView.displayEvents(events);
+        selectEventHearing();
     }
 }
 
@@ -70,7 +71,7 @@ void DeleteController::selectEventHearing()
                 cout << "Invalid selection!" << endl;
                 continue;
             }
-            setEventToDelete(selection);
+            setEventToDeleteFromIndex(selection);
         }
         else
         {
@@ -79,11 +80,16 @@ void DeleteController::selectEventHearing()
     }
 }
 
-void DeleteController::setEventToDelete(const int &index)
+void DeleteController::setEventToDeleteFromIndex(const int &index)
 {
-    deleteView.setSelectedEvent(events[index]);
-    eventIndex = index;
+    Event selectedEvent = *events[index];
+    setEventToDelete(selectedEvent);
+}
+
+void DeleteController::setEventToDelete(const Event &event)
+{
     isMenuHearing = false;
+    eventToDelete.emplace(event);
     handleDisplay();
 }
 
@@ -92,13 +98,17 @@ void DeleteController::deleteEvent()
 {
     try
     {
-        events[eventIndex]->deleteEvent();
+        eventToDelete->deleteEvent();
         onDeleteEventCallback();
         redirectToMainView();
     }
     catch (const pqxx::sql_error &e)
     {
         cerr << "Something went wrong, please try again ";
+    }
+    catch (const exception &e)
+    {
+        cerr << "Something went wrong, please try again " << e.what() << endl;
     }
 }
 
@@ -117,7 +127,7 @@ void DeleteController::redirectToMainView()
 
 void DeleteController::resetState()
 {
-    eventIndex = -1;
+    eventToDelete.reset();
     isMenuHearing = false;
 }
 

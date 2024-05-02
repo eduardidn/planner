@@ -27,14 +27,13 @@ void DeleteView::displayMenuOptions()
 {
     ConsoleUtils::clearScreen();
     cout << "Are you sure you want to delete this event?" << endl;
-    cout << "Title: " << selectedEvent->getTitle() << endl;
-    cout << "Description: " << selectedEvent->getDescription() << endl;
-    cout << "Date: " << selectedEvent->getDate() << endl;
-    cout << "Time: " << selectedEvent->getTime() << endl;
-    cout << "Yes or No (y/n):";
 }
 
-void DeleteView::setSelectedEvent(Event *event)
+void DeleteView::displayEventFields(const Event &event)
 {
-    selectedEvent = event;
+    cout << "Title: " << event.getTitle() << endl;
+    cout << "Description: " << event.getDescription() << endl;
+    cout << "Date: " << event.getDate() << endl;
+    cout << "Time: " << event.getTime() << endl;
+    cout << "Yes or No (y/n):";
 }

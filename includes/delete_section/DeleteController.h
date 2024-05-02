@@ -12,7 +12,7 @@ private:
     bool isMenuHearing = false;
     DeleteView deleteView;
     vector<Event *> events;
-    int eventIndex = -1;
+    optional<Event> eventToDelete;
     function<void()> onShowMainViewCallback;
     function<void()> onDeleteEventCallback;
 
@@ -21,7 +21,8 @@ public:
     void whileUserMenuSelection() override;
     void handleDisplay() override;
     void selectEventHearing();
-    void setEventToDelete(const int &index);
+    void setEventToDeleteFromIndex(const int &index);
+    void setEventToDelete(const Event &event);
 
     /* --------------------------------- Helpers -------------------------------- */
     void deleteEvent();

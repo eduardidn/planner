@@ -60,9 +60,8 @@ void ViewManager::showEditViewFromDetails(function<void()> editEventCb, const Ev
 
 void ViewManager::showDeleteViewFromDetails(function<void()> deleteEventCb, const Event &event)
 {
-    // deleteController.setEventToDelete(event);
-    // deleteController.setOnDeleteEventCallback(deleteEventCb);
-    // deleteController.handleDisplay();
+    deleteController.setEventToDelete(event);
+    deleteController.setOnDeleteEventCallback(deleteEventCb);
 }
 
 void ViewManager::showDetailView(function<void()> reloadCb, const Event &event)

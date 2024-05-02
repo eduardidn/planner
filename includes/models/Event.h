@@ -21,6 +21,8 @@ private:
     EventRepository &repository;
 
 public:
+    // used for creating an initial event object
+    Event();
     Event(const int &id, const string &title, const string &description, const string &date, const string &time, const string &frequency, const string &priority, EventRepository &eventRepository);
     Event(map<string, string> eventMap, EventRepository &eventRepository);
     // used for creating a new event on the DB
