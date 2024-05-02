@@ -59,6 +59,7 @@ void MainView::displayMenuOptions()
          << setw(50) << "Description" << endl;
     cout << string(95, '-') << endl;
 
+    ConsoleUtils::displayOption("[event#]", "Select event", "Enter the event number to view or modify its details.");
     ConsoleUtils::displayOption("v", "Toggle view (weekly/daily)", "Switches the display between weekly and daily views.");
     ConsoleUtils::displayOption("e", "Edit record", "Moves to the edit record screen to modify existing events.");
     ConsoleUtils::displayOption("a", "Add record", "Displays options on how the user can create a new record.");

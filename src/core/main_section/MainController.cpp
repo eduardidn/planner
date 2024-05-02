@@ -10,10 +10,11 @@
 #include <vector>
 using namespace std;
 
-MainController::MainController(EventRepository &eventRepository, function<void(function<void()>)> createViewCallback, function<void(function<void()>, const vector<Event *> &events)> editViewCb, function<void(function<void()>, const vector<Event *> &events)> deleteViewCb)
+MainController::MainController(EventRepository &eventRepository, function<void(function<void()>)> createViewCallback, function<void(function<void()>, const vector<Event *> &events)> editViewCb, function<void(function<void()>, const vector<Event *> &events)> deleteViewCb, function<void(function<void()>, const Event &event)> detailViewCb)
     : onCreateViewCallback(createViewCallback),
       onEditViewCallback(editViewCb),
       onDeleteViewCallback(deleteViewCb),
+      onDetailViewCallback(detailViewCb),
       repository(eventRepository)
 {
 }
@@ -60,6 +61,16 @@ void MainController::whileUserMenuSelection()
         cout << endl
              << "Enter command: ";
         cin >> command;
+
+        if (isdigit(command))
+        {
+            vector<Event *> events = selectedView == ViewMode::Daily ? mainView.getDailyEvents() : mainView.getWeeklyEvents();
+            int selection = command - '0';
+            if (events.size() > 0 && selection >= 0 && selection <= events.size())
+            {
+                handleDetailViewRedirect(selection);
+            }
+        }
 
         switch (command)
         {
@@ -119,6 +130,12 @@ void MainController::reloadEvents()
     {
         handleDisplayWeeklyView();
     }
+}
+
+void MainController::handleDetailViewRedirect(const int &index)
+{
+    vector<Event *> events = selectedView == ViewMode::Daily ? mainView.getDailyEvents() : mainView.getWeeklyEvents();
+    onDetailViewCallback(bind(&MainController::reloadEvents, this), *events[index]);
 }
 
 /* --------------------------------- Helpers -------------------------------- */

@@ -7,6 +7,7 @@
 #include "create_section/CreateController.h"
 #include "edit_section/EditController.h"
 #include "delete_section/DeleteController.h"
+#include "detail_section/DetailController.h"
 
 class ViewManager
 {
@@ -15,6 +16,7 @@ private:
     CreateController createController;
     EditController editController;
     DeleteController deleteController;
+    DetailController detailController;
 
 public:
     ViewManager(EventRepository &eventRepository);
@@ -22,6 +24,9 @@ public:
     void showCreateView(function<void()>);
     void showEditView(function<void()>, const vector<Event *> &events);
     void showDeleteView(function<void()>, const vector<Event *> &events);
+    void showEditViewFromDetails(function<void()>, const Event &event);
+    void showDeleteViewFromDetails(function<void()>, const Event &event);
+    void showDetailView(function<void()>, const Event &event);
 };
 
 #endif // VIEW_MANAGER_H

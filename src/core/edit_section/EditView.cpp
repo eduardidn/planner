@@ -23,15 +23,15 @@ void EditView::displayEvents(const vector<Event *> &events)
     }
 }
 
-void EditView::displayEventFields(map<string, string> newEvent)
+void EditView::displayEventFields(map<string, string> event)
 {
     cout << "These are the event fields you can edit:" << endl;
-    cout << "1. Title: " << newEvent["title"] << endl;
-    cout << "2. Description: " << newEvent["description"] << endl;
-    cout << "3. Date: " << newEvent["date"] << endl;
-    cout << "4. Time: " << newEvent["time"] << endl;
-    cout << "5. Frequency: " << newEvent["frequency"] << endl;
-    cout << "6. Priority: " << newEvent["priority"] << endl;
+    cout << "1. Title: " << event["title"] << endl;
+    cout << "2. Description: " << event["description"] << endl;
+    cout << "3. Date: " << event["date"] << endl;
+    cout << "4. Time: " << event["time"] << endl;
+    cout << "5. Frequency: " << event["frequency"] << endl;
+    cout << "6. Priority: " << event["priority"] << endl;
     cout << "Please enter the values for the fields" << endl;
 }
 

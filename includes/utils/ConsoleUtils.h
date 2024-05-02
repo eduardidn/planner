@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace std;
+
 namespace ConsoleUtils
 {
     void displayOption(const string &option, const string &action, const string &description);

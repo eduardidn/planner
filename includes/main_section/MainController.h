@@ -17,10 +17,11 @@ private:
     function<void(function<void()>)> onCreateViewCallback;
     function<void(function<void()>, const vector<Event *> &events)> onEditViewCallback;
     function<void(function<void()>, const vector<Event *> &events)> onDeleteViewCallback;
+    function<void(function<void()>, const Event &event)> onDetailViewCallback;
     EventRepository &repository;
 
 public:
-    MainController(EventRepository &eventRepository, function<void(function<void()>)> createViewCb, function<void(function<void()>, const vector<Event *> &events)> editViewCb, function<void(function<void()>, const vector<Event *> &events)> deleteViewCb);
+    MainController(EventRepository &eventRepository, function<void(function<void()>)> createViewCb, function<void(function<void()>, const vector<Event *> &events)> editViewCb, function<void(function<void()>, const vector<Event *> &events)> deleteViewCb, function<void(function<void()>, const Event &event)> detailViewCb);
     enum ViewMode
     {
         Daily,
@@ -32,6 +33,7 @@ public:
     void handleDisplayWeeklyView();
     void switchViews();
     void reloadEvents();
+    void handleDetailViewRedirect(const int &index);
 
     /* --------------------------------- Helpers -------------------------------- */
     void fetchDailyEvents();

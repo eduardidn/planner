@@ -7,13 +7,22 @@ ViewManager::ViewManager(EventRepository &eventRepository)
           [this](function<void()> editEventCallback, const vector<Event *> &events)
           { this->showEditView(editEventCallback, events); },
           [this](function<void()> deleteEventCallback, const vector<Event *> &events)
-          { this->showDeleteView(deleteEventCallback, events); }),
+          { this->showDeleteView(deleteEventCallback, events); },
+          [this](function<void()> detailEventCallback, const Event &event)
+          { this->showDetailView(detailEventCallback, event); }),
       createController(eventRepository, [this]()
                        { this->showMainView(); }),
       editController([this]()
                      { this->showMainView(); }),
       deleteController([this]()
-                       { this->showMainView(); })
+                       { this->showMainView(); }),
+      detailController(
+          [this]()
+          { this->showMainView(); },
+          [this](function<void()> editEventCallback, const Event &event)
+          { this->showEditViewFromDetails(editEventCallback, event); },
+          [this](function<void()> deleteEventCallback, const Event &event)
+          { this->showDeleteViewFromDetails(deleteEventCallback, event); })
 {
     mainController.handleDisplay();
 }
@@ -41,4 +50,24 @@ void ViewManager::showDeleteView(function<void()> deleteEventCb, const vector<Ev
     deleteController.setEvents(events);
     deleteController.setOnDeleteEventCallback(deleteEventCb);
     deleteController.handleDisplay();
+}
+
+void ViewManager::showEditViewFromDetails(function<void()> editEventCb, const Event &event)
+{
+    // editController.setEventToEdit(event);
+    // editController.setOnEditEventCallback(editEventCb);
+    // editController.handleDisplay();
+}
+
+void ViewManager::showDeleteViewFromDetails(function<void()> deleteEventCb, const Event &event)
+{
+    // deleteController.setEventToDelete(event);
+    // deleteController.setOnDeleteEventCallback(deleteEventCb);
+    // deleteController.handleDisplay();
+}
+
+void ViewManager::showDetailView(function<void()> backCb, const Event &event)
+{
+    detailController.setEvent(event);
+    detailController.handleDisplay();
 }
