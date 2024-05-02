@@ -13,7 +13,7 @@ private:
     EditView editView;
     vector<Event *> events;
     map<string, string> EventToEditFields;
-    int eventIndex = -1;
+    optional<Event> eventToEdit;
     function<void()> onShowMainViewCallback;
     function<void()> onEditEventCallback;
 
@@ -22,7 +22,8 @@ public:
     void whileUserMenuSelection() override;
     void handleDisplay() override;
     void selectEventHearing();
-    void setEventToEdit(const int &index);
+    void setEventToEditFromIndex(const int &index);
+    void setEventToEdit(const Event &event);
 
     /* --------------------------------- Helpers -------------------------------- */
     void setEventStringField(const string &field, const string &value);

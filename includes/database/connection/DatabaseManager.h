@@ -7,6 +7,7 @@ class DatabaseManager
 {
 public:
     DatabaseManager();
+    ~DatabaseManager();
 
     pqxx::result executeQuery(const std::string &query);
     bool isConnected() const;

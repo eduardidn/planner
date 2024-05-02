@@ -12,6 +12,7 @@ private:
     bool isMenuHearing = false;
     DetailView detailView;
     optional<Event> event;
+    function<void()> orReloadCb;
     function<void()> onShowMainViewCallback;
     function<void(function<void()>, Event &event)> onEditViewCallback;
     function<void(function<void()>, Event &event)> onDeleteViewCallback;
@@ -23,7 +24,9 @@ public:
 
     /* --------------------------------- Helpers -------------------------------- */
     void redirectToMainView();
+    void redirectToEditView();
     void resetState();
+    void onEditCallback();
 
     /* --------------------------------- Getters -------------------------------- */
     bool getIsMenuHearing();
@@ -31,6 +34,7 @@ public:
     /* --------------------------------- Setters -------------------------------- */
     void setIsMenuHearing(bool value);
     void setEvent(const Event &event);
+    void setOnReloadCallback(const function<void()> &cb);
 };
 
 #endif // DETAIL_CONTROLLER_H

@@ -38,7 +38,17 @@ DatabaseManager::DatabaseManager()
     catch (const exception &e)
     {
         cerr << e.what() << endl;
+        throw;
     }
+}
+
+DatabaseManager::~DatabaseManager()
+{
+    if (connection->is_open())
+    {
+        connection->close();
+    }
+    delete connection;
 }
 
 pqxx::result DatabaseManager::executeQuery(const string &query)

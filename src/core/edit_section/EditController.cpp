@@ -13,18 +13,18 @@ EditController::EditController(function<void()> editViewCallback) : onShowMainVi
 void EditController::handleDisplay()
 {
     editView.display();
-    if (eventIndex == -1)
-    {
-        editView.displayEvents(events);
-        if (!isMenuHearing)
-            selectEventHearing();
-    }
-    else
+    if (eventToEdit.has_value())
     {
         editView.displayEventFields(EventToEditFields);
         editView.displayMenuOptions();
         if (!isMenuHearing)
             whileUserMenuSelection();
+    }
+    else
+    {
+        editView.displayEvents(events);
+        if (!isMenuHearing)
+            selectEventHearing();
     }
 }
 
@@ -96,7 +96,7 @@ void EditController::selectEventHearing()
                 cout << "Invalid selection!" << endl;
                 continue;
             }
-            setEventToEdit(selection);
+            setEventToEditFromIndex(selection);
         }
         else
         {
@@ -105,18 +105,23 @@ void EditController::selectEventHearing()
     }
 }
 
-void EditController::setEventToEdit(const int &index)
+void EditController::setEventToEditFromIndex(const int &index)
 {
-    Event &selectedEvent = *events[index];
-    eventIndex = index;
+    Event selectedEvent = *events[index];
+    setEventToEdit(selectedEvent);
+}
+
+void EditController::setEventToEdit(const Event &event)
+{
     EventToEditFields = {
-        {"title", selectedEvent.getTitle()},
-        {"description", selectedEvent.getDescription()},
-        {"date", selectedEvent.getDate()},
-        {"time", selectedEvent.getTime()},
-        {"frequency", selectedEvent.getFrequency()},
-        {"priority", selectedEvent.getPriority()}};
+        {"title", event.getTitle()},
+        {"description", event.getDescription()},
+        {"date", event.getDate()},
+        {"time", event.getTime()},
+        {"frequency", event.getFrequency()},
+        {"priority", event.getPriority()}};
     setIsMenuHearing(false);
+    eventToEdit.emplace(event);
     handleDisplay();
 }
 
@@ -173,7 +178,7 @@ void EditController::editEvent()
 
     try
     {
-        events[eventIndex]
+        eventToEdit
             ->editEvent(EventToEditFields);
         onEditEventCallback();
         redirectToMainView();
@@ -181,6 +186,10 @@ void EditController::editEvent()
     catch (const pqxx::sql_error &e)
     {
         cerr << "Something went wrong, please try again ";
+    }
+    catch (const exception &e)
+    {
+        cerr << "Something went wrong, please try again " << e.what() << endl;
     }
 }
 
@@ -194,7 +203,7 @@ void EditController::redirectToMainView()
 void EditController::resetState()
 {
     EventToEditFields = {};
-    eventIndex = -1;
+    eventToEdit.reset();
     isMenuHearing = false;
 }
 

@@ -39,7 +39,7 @@ void DetailController::whileUserMenuSelection()
         switch (command)
         {
         case 'e':
-            // onEditViewCallback(onGoBack, events[eventIndex]);
+            redirectToEditView();
             break;
         case 'd':
             // onDeleteViewCallback(onGoBack, events[eventIndex]);
@@ -64,10 +64,23 @@ void DetailController::redirectToMainView()
     onShowMainViewCallback();
 }
 
+void DetailController::redirectToEditView()
+{
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    auto onEditCb = bind(&DetailController::onEditCallback, this);
+    onEditViewCallback(onEditCb, event.value());
+    resetState();
+}
+
 void DetailController::resetState()
 {
     event.reset();
     isMenuHearing = false;
+}
+
+void DetailController::onEditCallback()
+{
+    orReloadCb();
 }
 
 /* --------------------------------- Getters -------------------------------- */
@@ -85,4 +98,9 @@ void DetailController::setIsMenuHearing(bool value)
 void DetailController::setEvent(const Event &newEvent)
 {
     event.emplace(newEvent);
+}
+
+void DetailController::setOnReloadCallback(const function<void()> &cb)
+{
+    orReloadCb = cb;
 }

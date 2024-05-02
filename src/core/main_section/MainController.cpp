@@ -69,6 +69,7 @@ void MainController::whileUserMenuSelection()
             if (events.size() > 0 && selection >= 0 && selection <= events.size())
             {
                 handleDetailViewRedirect(selection);
+                continue;
             }
         }
 
@@ -135,7 +136,8 @@ void MainController::reloadEvents()
 void MainController::handleDetailViewRedirect(const int &index)
 {
     vector<Event *> events = selectedView == ViewMode::Daily ? mainView.getDailyEvents() : mainView.getWeeklyEvents();
-    onDetailViewCallback(bind(&MainController::reloadEvents, this), *events[index]);
+    auto reloadEventsCallback = bind(&MainController::reloadEvents, this);
+    onDetailViewCallback(reloadEventsCallback, *events[index]);
 }
 
 /* --------------------------------- Helpers -------------------------------- */
