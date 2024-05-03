@@ -67,16 +67,14 @@ void DetailController::redirectToMainView()
 void DetailController::redirectToEditView()
 {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    auto onEditCb = bind(&DetailController::onEditCallback, this);
-    onEditViewCallback(onEditCb, event.value());
+    onEditViewCallback(onReloadCb, event.value());
     resetState();
 }
 
 void DetailController::redirectToDeleteView()
 {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    auto onDeleteCb = bind(&DetailController::onDeleteCallback, this);
-    onDeleteViewCallback(onDeleteCb, event.value());
+    onDeleteViewCallback(onReloadCb, event.value());
     resetState();
 }
 
@@ -84,16 +82,6 @@ void DetailController::resetState()
 {
     event.reset();
     isMenuHearing = false;
-}
-
-void DetailController::onEditCallback()
-{
-    onReloadCb();
-}
-
-void DetailController::onDeleteCallback()
-{
-    onReloadCb();
 }
 
 /* --------------------------------- Getters -------------------------------- */

@@ -54,14 +54,14 @@ void ViewManager::showDeleteView(function<void()> deleteEventCb, const vector<Ev
 
 void ViewManager::showEditViewFromDetails(function<void()> editEventCb, const Event &event)
 {
-    editController.setEventToEdit(event);
     editController.setOnEditEventCallback(editEventCb);
+    editController.setEventToEdit(event);
 }
 
 void ViewManager::showDeleteViewFromDetails(function<void()> deleteEventCb, const Event &event)
 {
-    deleteController.setEventToDelete(event);
     deleteController.setOnDeleteEventCallback(deleteEventCb);
+    deleteController.setEventToDelete(event);
 }
 
 void ViewManager::showDetailView(function<void()> reloadCb, const Event &event)

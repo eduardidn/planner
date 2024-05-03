@@ -27,8 +27,6 @@ public:
     void redirectToEditView();
     void redirectToDeleteView();
     void resetState();
-    void onEditCallback();
-    void onDeleteCallback();
 
     /* --------------------------------- Getters -------------------------------- */
     bool getIsMenuHearing();
