@@ -4,6 +4,7 @@
         "conan": {}
     },
     "include": [
-        "/Users/eduardidn/College/planner/build/CMakePresets.json"
+        "/Users/eduardidn/Desktop/college/planner/build/CMakePresets.json",
+        "build/CMakePresets.json"
     ]
 }

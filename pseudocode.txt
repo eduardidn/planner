@@ -1,128 +1,210 @@
-// Main program execution
 Main {
-    // Startup of the program
+    // Initialize database connection and repository
+    repository = PostgreSQLTaskRepository()
+    
+    // Create TaskManager with dependency injection
+    taskManager = TaskManager(repository)
+    
+    // Start the Console UI
+    ui = ConsoleUI(taskManager)
+    ui.run()
 }
 
-// View Manager class
-class ViewManager {
-    function showMainView() {
-        // displays the main view
+
+Class ConsoleUI {
+    TaskManager taskManager
+
+    // Constructor
+    Function ConsoleUI(taskManager) {
+        this.taskManager = taskManager
     }
 
-    function showCreateView() {
-        // Displays create view
-    }
+    // Main loop
+    Function run() {
+        running = true
+        While (running) {
+            clearScreen()
+            displayTasks()
+            showMenu()
+            choice = getUserInput()
 
-    function showEditView() {
-        // Displays edit View
-    }
-
-    function showDeleteView() {
-        // Displays delete view
-    }
-}
-
-// Main View class
-class MainView {
-    function display() {
-        // display main view events
-    }
-
-     function displayWeeklyEvents() {
-        // display weekly events
-    }
-
-    function handleUserInput() {
-        command
-        switch(command) {
-            case "create":
-                createView = new CreateView()
-                createView.display()
-                break
-            case "edit":
-                editView = new EditView()
-                editView.display()
-                break
-            case "delete":
-                deleteView = new DeleteView()
-                deleteView.display()
-                break
-            case "switchView":
-                switchView()
-                break
+            Switch (choice) {
+                Case 1:
+                    addTask()
+                    Break
+                Case 2:
+                    editTask()
+                    Break
+                Case 3:
+                    deleteTask()
+                    Break
+                Case 4:
+                    running = false
+                    Break
+                Default:
+                    print("Invalid option. Try again.")
+            }
         }
     }
 
-    function switchView() {
-       // Switch between view types
+    // Display the available menu options
+    Function showMenu() {
+        print("1. Add Task")
+        print("2. Edit Task")
+        print("3. Delete Task")
+        print("4. Exit")
+    }
+
+    // Display all tasks
+    Function displayTasks() {
+        clearScreen()
+        tasks = taskManager.getAllTasks()
+
+        If (tasks.isEmpty()) {
+            print("No tasks found.")
+            Return
+        }
+
+        print("ID | Description | Type | Scheduled Date")
+        print("-----------------------------------------")
+
+        ForEach task in tasks {
+            print(task.id + " | " + task.description + " | " + task.type + " | " + DateValidator.timePointToString(task.scheduledDate))
+        }
+    }
+
+    // Add a new task
+    Function addTask() {
+        description = InputHandler.getValidatedString("Enter Task Description")
+        type = InputHandler.getValidatedString("Enter Task Type")
+        dateInput = InputHandler.getValidatedDate("Enter Scheduled Date (YYYY-MM-DD)")
+
+        scheduledDate = DateValidator.stringToTimePoint(dateInput)
+
+        If (confirmChanges(description, type, dateInput)) {
+            taskManager.addTask(description, type, scheduledDate)
+            print("Task added successfully!")
+        } Else {
+            print("Operation cancelled.")
+        }
+    }
+
+    // Edit an existing task
+    Function editTask() {
+        displayTasks()
+        id = InputHandler.getValidatedInt("Enter the ID of the task to edit")
+
+        task = taskManager.getTaskById(id)
+
+        If (task.isEmpty()) {
+            print("Task not found.")
+            Return
+        }
+
+        newDescription = InputHandler.getValidatedString("Enter new Task Description")
+        newType = InputHandler.getValidatedString("Enter new Task Type")
+        newDate = InputHandler.getValidatedDate("Enter new Scheduled Date (YYYY-MM-DD)")
+
+        scheduledDate = DateValidator.stringToTimePoint(newDate)
+
+        If (confirmChanges(newDescription, newType, newDate)) {
+            taskManager.updateTask(id, newDescription, newType, scheduledDate)
+            print("Task updated successfully!")
+        } Else {
+            print("Operation cancelled.")
+        }
+    }
+
+    // Delete an existing task
+    Function deleteTask() {
+        displayTasks()
+        id = InputHandler.getValidatedInt("Enter the ID of the task to delete")
+
+        task = taskManager.getTaskById(id)
+
+        If (task.isEmpty()) {
+            print("Task not found.")
+            Return
+        }
+
+        If (confirmDelete(task)) {
+            taskManager.deleteTask(id)
+            print("Task deleted successfully!")
+        } Else {
+            print("Operation cancelled.")
+        }
+    }
+
+    // Confirm delete
+    Function confirmDelete(task) {
+        print("You are about to delete the following task:")
+        print(task.description + " | " + task.type + " | " + DateValidator.timePointToString(task.scheduledDate))
+        return getUserConfirmation()
     }
 }
 
-// Create View class
-class CreateView {
-    function display() {
-        // display event fields that can be filled
+Class TaskManager {
+    ITaskRepository repository
+
+    // Constructor
+    Function TaskManager(repository) {
+        this.repository = repository
     }
 
-    function displayMenuOptions() {
-        // display menu of options that the user can select
-    }
-}
-
-// Edit View class
-class EditView {
-    Event event
-
-    constructor(eventId) {
-        // set the event to edit on the class
+    Function addTask(description, type, scheduledDate) {
+        task = Task(0, description, type, scheduledDate)
+        repository.addTask(task)
     }
 
-    function display() {
-       // display the event details to edit
+    Function getTaskById(id) {
+        return repository.getTaskById(id)
     }
 
-    function displayMenuOptions() {
-        // displays the menu options the user can select on this view
-    }
-}
-
-// Delete View class
-class DeleteView {
-    Event[] events
-
-    function display() {
-        // display all the events that can be deleted
+    Function getAllTasks() {
+        return repository.getAllTasks()
     }
 
-    displayMenuOptions {
-        // display the available options to select
-        // confirm if the users wants to delete the event
+    Function updateTask(id, description, type, scheduledDate) {
+        task = Task(id, description, type, scheduledDate)
+        repository.updateTask(task)
+    }
+
+    Function deleteTask(id) {
+        repository.deleteTask(id)
     }
 }
 
-// Event class
-class Event {
-    int id
-    string title
-    string description
-    string date
-    string time
-    string frequency
-    string priority
-
-    constructor(data) {
-        // Initialize properties
+Class PostgreSQLTaskRepository implements ITaskRepository {
+    Function addTask(task) {
+        db.executePrepared("insert_task", task.description, task.type, DateValidator.timePointToString(task.scheduledDate))
     }
 
-    function save() {
-        // Save to database
+    Function getTaskById(id) {
+        result = db.executePrepared("select_task_by_id", id)
+        If (result.isEmpty()) {
+            Return null
+        }
+        row = result[0]
+        Return Task(row.id, row.description, row.type, DateValidator.stringToTimePoint(row.scheduled_date))
     }
 
-    function edit(changes) {
-        // Apply changes and update in database
+    Function getAllTasks() {
+        results = db.executePrepared("select_all_tasks")
+        tasks = []
+        ForEach row in results {
+            task = Task(row.id, row.description, row.type, DateValidator.stringToTimePoint(row.scheduled_date))
+            tasks.push(task)
+        }
+        Return tasks
     }
 
-    function delete() {
-        // Delete from database
+    Function updateTask(task) {
+        db.executePrepared("update_task", task.description, task.type, DateValidator.timePointToString(task.scheduledDate), task.id)
+    }
+
+    Function deleteTask(id) {
+        db.executePrepared("delete_task", id)
     }
 }
+
+

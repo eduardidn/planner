@@ -1,5 +1,13 @@
 {
-  "cSpell.words": ["aily", "edium", "eekly", "onthly", "pqxx", "ritical"],
+  "cSpell.words": [
+    "aily",
+    "edium",
+    "eekly",
+    "onthly",
+    "POSTGRESQL",
+    "pqxx",
+    "ritical"
+  ],
   "files.associations": {
     "*.embeddedhtml": "html",
     "vector": "cpp",
@@ -80,7 +88,13 @@
     "charconv": "cpp",
     "fstream": "cpp",
     "format": "cpp",
-    "chrono": "cpp"
+    "chrono": "cpp",
+    "condition_variable": "cpp",
+    "forward_list": "cpp",
+    "print": "cpp",
+    "stop_token": "cpp",
+    "text_encoding": "cpp",
+    "__tree": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
